@@ -1,9 +1,7 @@
-import { LMSDKCallbacks } from "@likeminds.community/feed-js";
+import { LMSDKCallbacks } from "@likeminds.community/feed-js-beta";
 import axios, { AxiosRequestConfig } from "axios";
-import { environment } from "src/environment";
-import { API } from "@likeminds.community/feed-js/dist/shared/constants/api.constant";
-// import { LMSDKCallbacks } from "../../LMCallback";
-// import { TokenValues } from "../../shared/tokens";
+import { environment } from "../../environment";
+import { API } from "@likeminds.community/feed-js-beta/dist/shared/constants/api.constant";
 
 // TokenManager.ts
 class TokenManager {
@@ -75,15 +73,6 @@ class TokenManager {
       this.accessToken = accessToken.access_token;
       this.setRefreshToken(accessToken.refresh_token);
       this.setAccessToken(accessToken.access_token);
-      // TODO set tokens in local storage
-    //   localStorage.setItem(
-    //     TokenValues.LOCAL_ACCESS_TOKEN,
-    //     accessToken.access_token
-    //   );
-    //   localStorage.setItem(
-    //     TokenValues.LOCAL_REFRESH_TOKEN,
-    //     accessToken.refresh_token
-    //   );
       this.lmSdkCallback.onAccessTokenExpiredAndRefreshed(
         this.accessToken,
         this.refreshToken
@@ -97,12 +86,6 @@ class TokenManager {
       // done
       this.setAccessToken(accessToken);
       this.setRefreshToken(refreshToken);
-      // TODO add tokens in local storage too
-      // done
-      // this.setAccessTokenInLocalStorage(accessToken);
-    //   localStorage.setItem(TokenValues.LOCAL_ACCESS_TOKEN, accessToken);
-    //   localStorage.setItem(TokenValues.LOCAL_REFRESH_TOKEN, refreshToken);
-      // this.setRefreshTokenInLocalStorage(refreshToken);
       if (error?.response && error?.response?.status >= 500) throw error;
     }
   }

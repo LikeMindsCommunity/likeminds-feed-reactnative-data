@@ -1,12 +1,3 @@
-import NetworkLibrary from "@likeminds.community/feed-js/dist/core/services/networklibrary";
-import InitiateUserClient from "@likeminds.community/feed-js/dist/initiateUser/InitiateUserClient";
-import PostClient from "@likeminds.community/feed-js/dist/post/PostClient";
-import ModerationClient from "@likeminds.community/feed-js/dist/moderation/ModerationClient";
-import CommentClient from "@likeminds.community/feed-js/dist/comment/CommentClient";
-import NotificationFeedClient from "@likeminds.community/feed-js/dist/notificationFeed/NotificationFeedClient";
-import UniversalFeedClient from "@likeminds.community/feed-js/dist/universalfeed/UniversalFeedClient";
-import HelperClient from "@likeminds.community/feed-js/dist/helper/HelperClient";
-import PollFeedClient from "@likeminds.community/feed-js/dist/poll/PollClient";
 import {
   AddCommentRequest,
   AddPostRequest,
@@ -36,68 +27,52 @@ import {
   ReplyCommentRequest,
   SavePostRequest,
   ValidateUserRequest,
-} from "@likeminds.community/feed-js";
-import { SubmitPollVoteRequest } from "@likeminds.community/feed-js/dist/poll/model/SubmitPollVoteRequest";
-import { AddPollOptionRequest } from "@likeminds.community/feed-js/dist/poll/model/AddPollOptionRequest";
-import { GetPollVotesRequest } from "@likeminds.community/feed-js/dist/poll/model/GetPollVotesRequest";
-import Attachment from "@likeminds.community/feed-js/dist/post/model/Attachment";
-import AttachmentMeta from "@likeminds.community/feed-js/dist/post/model/AttachmentMeta";
-import { GetFeedResponse } from "@likeminds.community/feed-js/dist/universalfeed/model/GetFeedResponse";
-import { IPost } from "@likeminds.community/feed-js/dist/shared/models/post";
-import { IOgTag } from "@likeminds.community/feed-js/dist/shared/models/ogTags";
-import { IUser } from "@likeminds.community/feed-js/dist/shared/models/user";
-import { IMenuItem } from "@likeminds.community/feed-js/dist/shared/models/menuItem";
-import { AddCommentResponse } from "@likeminds.community/feed-js/dist/comment/model/AddCommentResponse";
-import { GetCommentResponse } from "@likeminds.community/feed-js/dist/comment/model/GetCommentResponse";
-import { IComment } from "@likeminds.community/feed-js/dist/shared/models/comment";
-import { EditCommentResponse } from "@likeminds.community/feed-js/dist/comment/model/EditCommentResponse";
+  Attachment,
+  AttachmentMeta,
+  NetworkLibrary,
+  Like,
+} from "@likeminds.community/feed-js-beta";
+import { SubmitPollVoteRequest } from "@likeminds.community/feed-js-beta/dist/poll/model/SubmitPollVoteRequest";
+import { AddPollOptionRequest } from "@likeminds.community/feed-js-beta/dist/poll/model/AddPollOptionRequest";
+import { GetPollVotesRequest } from "@likeminds.community/feed-js-beta/dist/poll/model/GetPollVotesRequest";
+import { GetFeedResponse } from "@likeminds.community/feed-js-beta/dist/universalfeed/model/GetFeedResponse";
+import { IPost } from "@likeminds.community/feed-js-beta/dist/shared/models/post";
+import { IOgTag } from "@likeminds.community/feed-js-beta/dist/shared/models/ogTags";
+import { IUser } from "@likeminds.community/feed-js-beta/dist/shared/models/user";
+import { IMenuItem } from "@likeminds.community/feed-js-beta/dist/shared/models/menuItem";
+import { AddCommentResponse } from "@likeminds.community/feed-js-beta/dist/comment/model/AddCommentResponse";
+import { GetCommentResponse } from "@likeminds.community/feed-js-beta/dist/comment/model/GetCommentResponse";
+import { IComment } from "@likeminds.community/feed-js-beta/dist/shared/models/comment";
+import { EditCommentResponse } from "@likeminds.community/feed-js-beta/dist/comment/model/EditCommentResponse";
 import {
   IMemberRight,
   IMemberState,
-} from "@likeminds.community/feed-js/dist/shared/models/memberRights";
+} from "@likeminds.community/feed-js-beta/dist/shared/models/memberRights";
 import {
   IActivities,
   IActivity,
-} from "@likeminds.community/feed-js/dist/shared/models/activity";
-import { IMember } from "@likeminds.community/feed-js/dist/initiateUser/model/GetAllMembersResponse";
-import { LMFeedTopics } from "@likeminds.community/feed-js/dist//post/model/GetTopicsResponse";
-import { GetPostLikesResponse } from "@likeminds.community/feed-js/dist/post/model/GetPostLikesResponse";
-import Like from "@likeminds.community/feed-js/dist/post/model/Like";
+} from "@likeminds.community/feed-js-beta/dist/shared/models/activity";
+import { IMember } from "@likeminds.community/feed-js-beta/dist/initiateUser/model/GetAllMembersResponse";
+import { LMFeedTopics } from "@likeminds.community/feed-js-beta/dist//post/model/GetTopicsResponse";
+import { GetPostLikesResponse } from "@likeminds.community/feed-js-beta/dist/post/model/GetPostLikesResponse";
+// import Like from "@likeminds.community/feed-js-beta/dist/post/model/Like";
 import DBLibrary from "./core/services/networkLibrary";
 import RNInitiateUserClient from "./initiateUser/RNInitiateUserClient";
+// import NetworkLibrary from "@likeminds.community/feed-js-beta/dist/core/services/networklibrary";
+import { LMFeedClient as DLClient } from "@likeminds.community/feed-js-beta";
 
 class LMFeedClient {
-  private initiateUserClient: InitiateUserClient;
   private rnInitiateUserClient: RNInitiateUserClient;
-  private postClient: PostClient;
-  private moderationClient: ModerationClient;
-  private commentClient: CommentClient;
   private networkLibrary: NetworkLibrary;
   private dbLibrary: DBLibrary;
-  private notificationFeedClient: NotificationFeedClient;
-  private feedClient: UniversalFeedClient;
+  public dlClient: DLClient;
   private platformCode: string | null = null;
   private versionCode: number | null = null;
   private apiKey: string | null = null;
-  private helperClient: HelperClient;
-  private LMSDKCallbacks: LMSDKCallbacks;
+  private lmSdkCallbacks: LMSDKCallbacks;
 
-  private pollFeedClient: PollFeedClient;
   constructor() {
-    this.networkLibrary = new NetworkLibrary(this.LMSDKCallbacks);
-    this.dbLibrary = new DBLibrary();
-    this.initiateUserClient = new InitiateUserClient(this.networkLibrary);
-    this.rnInitiateUserClient = new RNInitiateUserClient(this.networkLibrary);
-    this.postClient = new PostClient(this.networkLibrary);
-    this.moderationClient = new ModerationClient(this.networkLibrary);
-    this.feedClient = new UniversalFeedClient(this.networkLibrary);
-    this.moderationClient = new ModerationClient(this.networkLibrary);
-    this.commentClient = new CommentClient(this.networkLibrary);
-    this.notificationFeedClient = new NotificationFeedClient(
-      this.networkLibrary
-    );
-    this.helperClient = new HelperClient(this.networkLibrary);
-    this.pollFeedClient = new PollFeedClient(this.networkLibrary);
+    this.dlClient = new DLClient();
   }
 
   public static Builder(): LMFeedClient {
@@ -119,7 +94,7 @@ class LMFeedClient {
   }
 
   public setLMSDKCallbacks(lmSdkCallbacks: LMSDKCallbacks) {
-    this.LMSDKCallbacks = lmSdkCallbacks;
+    this.lmSdkCallbacks = lmSdkCallbacks;
     this.networkLibrary.setLMSDKCallbacks(lmSdkCallbacks);
   }
 
@@ -134,11 +109,25 @@ class LMFeedClient {
         "Please provide versionCode before building the LMFeedClient."
       );
     }
-
-    this.networkLibrary.setPlatformCode(this.platformCode);
-    this.networkLibrary.setVersionCode(this.versionCode);
-    this.networkLibrary.setApiKey(this.apiKey);
-
+    this.dlClient.setPlatformCode(this.platformCode);
+    this.dlClient.setVersionCode(this.versionCode);
+    this.dlClient.setLMSDKCallbacks(this.lmSdkCallbacks);
+    this.dlClient.build();
+    this.networkLibrary = this.dlClient.getNetworkLibrary();
+    
+    this.rnInitiateUserClient = new RNInitiateUserClient(
+      this.networkLibrary,
+      this.dlClient,
+      this.versionCode,
+      this.platformCode,
+      this.lmSdkCallbacks
+    );
+    this.dbLibrary = new DBLibrary(
+      this.dlClient,
+      this.versionCode,
+      this.platformCode,
+      this.lmSdkCallbacks
+    );
     return this;
   }
 
@@ -204,7 +193,7 @@ class LMFeedClient {
 
   async addPost(addPostRequest: AddPostRequest) {
     try {
-      const addPostResponse = await this.postClient.addPost(addPostRequest);
+      const addPostResponse = await this.dlClient.addPost(addPostRequest);
       return addPostResponse;
     } catch (error) {
       console.log("Error while posting feed :", error);
@@ -214,7 +203,7 @@ class LMFeedClient {
 
   async decodeURL(decodeURLRequest: DecodeURLRequest) {
     try {
-      const addPostResponse = await this.postClient.decodeUrl(decodeURLRequest);
+      const addPostResponse = await this.dlClient.decodeURL(decodeURLRequest);
       return addPostResponse;
     } catch (error) {
       console.log("Error while posting feed :", error);
@@ -225,7 +214,7 @@ class LMFeedClient {
   async deletePost(deletePostRequest: DeletePostRequest) {
     try {
       const deletePostResponse =
-        await this.postClient.deletePost(deletePostRequest);
+        await this.dlClient.deletePost(deletePostRequest);
       return deletePostResponse;
     } catch (error) {
       console.log("Error while deleting post:", error);
@@ -235,7 +224,7 @@ class LMFeedClient {
 
   async editPost(editPostRequest: EditPostRequest) {
     try {
-      const editPostResponse = await this.postClient.editPost(editPostRequest);
+      const editPostResponse = await this.dlClient.editPost(editPostRequest);
       return editPostResponse;
     } catch (error) {
       console.log("Error while editing post:", error);
@@ -247,7 +236,7 @@ class LMFeedClient {
   async getPostLikes(getPostLikesRequest: GetPostLikesRequest) {
     try {
       const getPostLikesResponse =
-        await this.postClient.getPostLikes(getPostLikesRequest);
+        await this.dlClient.getPostLikes(getPostLikesRequest);
       return getPostLikesResponse;
     } catch (error) {
       console.log("Error while getting post likes:", error);
@@ -257,7 +246,7 @@ class LMFeedClient {
 
   async getPost(getPostRequest: GetPostRequest) {
     try {
-      const getPostResponse = await this.postClient.getPost(getPostRequest);
+      const getPostResponse = await this.dlClient.getPost(getPostRequest);
       return getPostResponse;
     } catch (error) {
       console.log("Error while getting post:", error);
@@ -267,7 +256,7 @@ class LMFeedClient {
 
   async getTopics(request: GetTopicsRequest) {
     try {
-      const getPostResponse = await this.postClient.getTopics(request);
+      const getPostResponse = await this.dlClient.getTopics(request);
       return getPostResponse;
     } catch (error) {
       console.log("Error while getting post:", error);
@@ -277,7 +266,7 @@ class LMFeedClient {
 
   async likePost(likePostRequest: LikePostRequest) {
     try {
-      const likePostResponse = await this.postClient.likePost(likePostRequest);
+      const likePostResponse = await this.dlClient.likePost(likePostRequest);
       return likePostResponse;
     } catch (error) {
       console.log("Error while liking post:", error);
@@ -287,7 +276,7 @@ class LMFeedClient {
 
   async pinPost(request: PinPostRequest) {
     try {
-      const pinPostResponse = await this.postClient.pinPost(request);
+      const pinPostResponse = await this.dlClient.pinPost(request);
       return pinPostResponse;
     } catch (error) {
       console.log("Error while pinning post:", error);
@@ -297,7 +286,7 @@ class LMFeedClient {
 
   async savePost(request: SavePostRequest) {
     try {
-      const savePostResponse = await this.postClient.savePost(request);
+      const savePostResponse = await this.dlClient.savePost(request);
       return savePostResponse;
     } catch (error) {
       console.log("Error while saving post:", error);
@@ -307,7 +296,7 @@ class LMFeedClient {
   async getTaggingList(request: GetTaggingListRequest) {
     try {
       const gettaggingListResponse =
-        await this.postClient.getTaggingList(request);
+        await this.dlClient.getTaggingList(request);
       return gettaggingListResponse;
     } catch (error) {
       console.log("Error while getting tagging list:", error);
@@ -316,7 +305,7 @@ class LMFeedClient {
   }
   async getFeed(request: GetFeedRequest) {
     try {
-      const getFeedResponse = await this.feedClient.getFeed(request);
+      const getFeedResponse = await this.dlClient.getFeed(request);
       return getFeedResponse;
     } catch (error) {
       console.log("Error while getting tagging list:", error);
@@ -325,8 +314,7 @@ class LMFeedClient {
   }
   async getReportTags(request: GetReportTagsRequest) {
     try {
-      const getReportTagsResponse =
-        await this.moderationClient.getReportTags(request);
+      const getReportTagsResponse = await this.dlClient.getReportTags(request);
       return getReportTagsResponse;
     } catch (error) {
       console.log("Error while getting tagging list:", error);
@@ -335,8 +323,7 @@ class LMFeedClient {
   }
   async postReport(request: PostReportRequest) {
     try {
-      const postReportResponse =
-        await this.moderationClient.postReport(request);
+      const postReportResponse = await this.dlClient.postReport(request);
       return postReportResponse;
     } catch (error) {
       console.log("Error while getting tagging list:", error);
@@ -350,15 +337,16 @@ class LMFeedClient {
     pageNo: number
   ) {
     try {
-      const getCommentResponse = await this.commentClient.getComment(
+      const getCommentResponse = await this.dlClient.getComments(
+        postId,
         GetCommentRequest.builder()
           .setcommentId(commentId)
           .setpage(pageNo)
           .setpageSize(10)
           .setpostId(postId)
           .build(),
-        postId,
-        commentId
+        commentId,
+        pageNo
       );
       return getCommentResponse;
     } catch (error) {
@@ -369,7 +357,7 @@ class LMFeedClient {
 
   async addComment(request: AddCommentRequest) {
     try {
-      const postReportResponse = await this.commentClient.addComment(request);
+      const postReportResponse = await this.dlClient.addComment(request);
       return postReportResponse;
     } catch (error) {
       console.log("Error while getting tagging list:", error);
@@ -379,7 +367,7 @@ class LMFeedClient {
 
   async replyComment(request: ReplyCommentRequest) {
     try {
-      return await this.commentClient.replyComment(request);
+      return await this.dlClient.replyComment(request);
     } catch (error) {
       console.log("Error while replying to comment:", error);
       throw error;
@@ -387,7 +375,7 @@ class LMFeedClient {
   }
   async editComment(request: EditCommentRequest) {
     try {
-      return await this.commentClient.editComment(request);
+      return await this.dlClient.editComment(request);
     } catch (error) {
       console.log("Error while editing comment:", error);
       throw error;
@@ -396,7 +384,7 @@ class LMFeedClient {
 
   async deleteComment(request: DeleteCommentRequest) {
     try {
-      return await this.commentClient.deleteComment(request);
+      return await this.dlClient.deleteComment(request);
     } catch (error) {
       console.log("Error while deleting comment:", error);
       throw error;
@@ -404,7 +392,7 @@ class LMFeedClient {
   }
   async likeComment(request: LikeCommentRequest) {
     try {
-      return await this.commentClient.likeComment(request);
+      return await this.dlClient.likeComment(request);
     } catch (error) {
       console.log("Error while liking comment:", error);
       throw error;
@@ -412,7 +400,7 @@ class LMFeedClient {
   }
   async getCommentLikes(request: GetCommentLikesRequest) {
     try {
-      return await this.commentClient.getCommentLikes(request);
+      return await this.dlClient.getCommentLikes(request);
     } catch (error) {
       console.log("Error while getting comment likes:", error);
       throw error;
@@ -420,7 +408,7 @@ class LMFeedClient {
   }
   async getMemberState() {
     try {
-      return await this.initiateUserClient.getMemberState();
+      return await this.dlClient.getMemberState();
     } catch (error) {
       console.log("Error while getting member state:", error);
       throw error;
@@ -429,7 +417,7 @@ class LMFeedClient {
 
   async getNotificationFeed(request: GetNotificationFeedRequest) {
     try {
-      return await this.notificationFeedClient.getNotificationFeed(request);
+      return await this.dlClient.getNotificationFeed(request);
     } catch (error) {
       console.log("Error while getting notification feed:", error);
       throw error;
@@ -438,7 +426,7 @@ class LMFeedClient {
 
   async markReadNotification(request: MarkReadNotificationRequest) {
     try {
-      return await this.notificationFeedClient.markReadNotification(request);
+      return await this.dlClient.markReadNotification(request);
     } catch (error) {
       console.log("Error while marking notification as read:", error);
       throw error;
@@ -447,7 +435,7 @@ class LMFeedClient {
 
   async getUnreadNotificationCount() {
     try {
-      return await this.notificationFeedClient.getUnreadNotificationCount();
+      return await this.dlClient.getUnreadNotificationCount();
     } catch (error) {
       console.log("Error while getting unread notification count:", error);
       throw error;
@@ -455,7 +443,7 @@ class LMFeedClient {
   }
   async getAllMembers(request: GetAllMembersRequest) {
     try {
-      return await this.initiateUserClient.getAllMembers(request);
+      return await this.dlClient.getAllMembers(request);
     } catch (error) {
       console.log("Error while members", error);
       throw error;
@@ -463,7 +451,7 @@ class LMFeedClient {
   }
   async validateRegisterDeviceRequest(request: RegisterDeviceRequest) {
     try {
-      return await this.helperClient.validateRegisterDeviceRequest(request);
+      return await this.dlClient.validateRegisterDeviceRequest(request);
     } catch (error) {
       console.log("Error while validate register device", error);
       throw error;
@@ -471,7 +459,7 @@ class LMFeedClient {
   }
   async registerDevice() {
     try {
-      return await this.helperClient.registerDevice();
+      return await this.dlClient.registerDevice();
     } catch (error) {
       console.log("Error while register device", error);
       throw error;
@@ -479,7 +467,7 @@ class LMFeedClient {
   }
   async submitPollVote(request: SubmitPollVoteRequest) {
     try {
-      return await this.pollFeedClient.submitPollVote(request);
+      return await this.dlClient.submitPollVote(request);
     } catch (error) {
       console.log("Error while submit poll", error);
       throw error;
@@ -487,7 +475,7 @@ class LMFeedClient {
   }
   async addPollOption(request: AddPollOptionRequest) {
     try {
-      return await this.pollFeedClient.addPollOption(request);
+      return await this.dlClient.addPollOption(request);
     } catch (error) {
       console.log("Error while add poll option", error);
       throw error;
@@ -495,7 +483,7 @@ class LMFeedClient {
   }
   async getPollVotes(request: GetPollVotesRequest) {
     try {
-      return await this.pollFeedClient.getPollVotes(request);
+      return await this.dlClient.getPollVotes(request);
     } catch (error) {
       console.log("Error while get poll votes", error);
       throw error;

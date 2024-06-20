@@ -1,16 +1,33 @@
 // NetworkLibrary
-import TokenManager from "@likeminds.community/feed-js/dist/core/services/tokenmanager";
-import { LMSDKCallbacks } from "@likeminds.community/feed-js";
-import { TokenValues } from "@likeminds.community/feed-js/dist/shared/tokens";
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import {
+  TokenValues,
+  LMSDKCallbacks,
+  NetworkLibrary,
+} from "@likeminds.community/feed-js-beta";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import LMResponse from "./lmresponse";
 import axios, { AxiosRequestConfig, AxiosResponse } from "axios";
 import { environment } from "../../environment";
+import { LMFeedClient as DLClient } from "@likeminds.community/feed-js-beta";
 
 class RNNetworkLibrary {
-  private tokenManager: TokenManager;
   private xApiKey: string | null;
   private lmSdkCallbacks: LMSDKCallbacks | null;
+  private networkLibrary: NetworkLibrary;
+  private versionCode: number;
+  private platformCode: string;
+
+  constructor(
+    dlClient: DLClient,
+    versionCode:number,
+    platformCode: string,
+    lmSdkCallbacks: LMSDKCallbacks
+  ) {
+    this.networkLibrary = dlClient.getNetworkLibrary();
+    this.versionCode = versionCode;
+    this.platformCode = platformCode;
+    this.lmSdkCallbacks = lmSdkCallbacks;
+  }
 
   public setUserInLocalStorage(user: string) {
     AsyncStorage.setItem(TokenValues.LOCAL_USER, user);
@@ -63,13 +80,10 @@ class RNNetworkLibrary {
     };
     const initApi = url.includes("initiate");
     requestConfig.headers["Content-Type"] = "application/json";
-    requestConfig.headers["x-version-code"] =
-      this.tokenManager.getVersionCode();
+    requestConfig.headers["x-version-code"] = this.versionCode?.toString();
 
     const device = url.includes("user/device/push");
-    if (!device)
-      requestConfig.headers["x-platform-code"] =
-        this.tokenManager.getPlatformCode();
+    if (!device) requestConfig.headers["x-platform-code"] = this.platformCode;
 
     const cFeed = url.includes("community/feed");
     if (cFeed) requestConfig.headers["x-accept-version"] = "v2";
@@ -80,17 +94,16 @@ class RNNetworkLibrary {
         "application/x-www-form-urlencoded";
 
     // Add the access token to the request headers
-    // if (this.tokenManager.getAccessToken && !initApi) {
-    if (this.tokenManager.getAccessToken) {
+    if (this.networkLibrary.getAccessToken()?.length) {
       requestConfig.headers["Authorization"] =
-        `Bearer ${this.tokenManager.getAccessToken()}`;
+        `Bearer ${this.networkLibrary.getAccessToken()}`;
     }
 
     // Add the apiKey in initiate api to the request headers
     if (initApi) {
-      if (this.tokenManager.getPlatformCode() === "rn") {
-        const xApiKey = await AsyncStorage.getItem("xApiKey");
-        if (xApiKey && xApiKey.length) {
+      if (this.platformCode === "rn") {
+        const xApiKey = await AsyncStorage.getItem(TokenValues.LOCAL_API_KEY);
+        if (xApiKey && xApiKey?.length) {
           requestConfig.headers["x-api-key"] = xApiKey;
         } else {
           throw "Please provide the Api Key";
@@ -99,7 +112,6 @@ class RNNetworkLibrary {
         requestConfig.headers["x-api-key"] = this.xApiKey;
       }
     }
-
     try {
       const response = await this.makeRequest<{ data: T }>(url, requestConfig);
       return new LMResponse<T>(response?.data?.data, null, true);
@@ -109,22 +121,18 @@ class RNNetworkLibrary {
         if (url.includes("user/refresh")) {
           const { accessToken, refreshToken } =
             await this.lmSdkCallbacks.onRefreshTokenExpired();
-          // TODO expose functions for storing tokens from DL
-          // done
-          this.tokenManager.setAccessToken(accessToken);
-          this.tokenManager.setRefreshToken(refreshToken);
-          // TODO add tokens in local storage too
-          // done
+          this.networkLibrary.setAccessToken(accessToken);
+          this.networkLibrary.setRefreshToken(refreshToken);
           this.setAccessTokenInLocalStorage(accessToken);
           this.setRefreshTokenInLocalStorage(refreshToken);
         } else {
-          await this.tokenManager.refreshAccessToken();
+          await this.networkLibrary.onRefreshAccessToken();
         }
 
         // Update the Authorization header with the new access token
         const updatedConfig = { ...requestConfig };
         updatedConfig.headers["Authorization"] =
-          `Bearer ${this.tokenManager.getAccessToken()}`;
+          `Bearer ${this.networkLibrary.getAccessToken()}`;
 
         // Retry the request
         return this.makeRequest<{ data: T }>(url, updatedConfig)

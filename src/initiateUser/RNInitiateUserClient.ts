@@ -1,29 +1,36 @@
-// import { API } from "../shared/constants/api.constant";
-
-import { InitiateUserRequest, ValidateUserRequest } from "@likeminds.community/feed-js";
-import NetworkLibrary from "@likeminds.community/feed-js/dist/core/services/networklibrary";
-import { API } from "@likeminds.community/feed-js/dist/shared/constants/api.constant";
-import { InitiateUserResponse, ValidateUserResponse } from "@likeminds.community/feed-js/dist/shared/models/api-responses/initiateUserResponse";
-import RNNetworkLibrary from "src/core/services/networkLibrary";
-import { ModelConverter } from "src/utils/ModelConverter";
-
-// import InitiateUserRequest from "./model/InitiateUserRequest";
-// import { InitiateUserResponse } from "../shared/models/api-responses/initiateUserResponse";
-// import NetworkLibrary from "../core/services/networklibrary";
-// import { ModelConverter } from "../utils/ModelConverter";
-
-// import { GetMemberStateResponse } from "../shared/models/api-responses/getMemberStateResponse";
-// import GetAllMembersRequest from "./model/GetAllMembersRequest";
-// import ValidateUserRequest from "./model/ValidateUserRequest";
-// import { ValidateUserResponse } from "../shared/models/api-responses/initiateUserResponse";
-// import { GetAllMembersResponse } from "../shared/models/api-responses/getAllMembersResponse";
+import {
+  InitiateUserRequest,
+  ValidateUserRequest,
+  API,
+  LMSDKCallbacks,
+} from "@likeminds.community/feed-js-beta";
+import NetworkLibrary from "@likeminds.community/feed-js-beta/dist/core/services/networklibrary";
+import {
+  InitiateUserResponse,
+  ValidateUserResponse,
+} from "@likeminds.community/feed-js-beta/dist/shared/models/api-responses/initiateUserResponse";
+import RNNetworkLibrary from "../core/services/networkLibrary";
+import { ModelConverter } from "../utils/ModelConverter";
+import { LMFeedClient as DLClient } from "@likeminds.community/feed-js-beta";
 
 class RNInitiateUserClient {
   private rnNetworkLibrary: RNNetworkLibrary;
   private networkLibrary: NetworkLibrary;
 
-  constructor(networkInstance: NetworkLibrary) {
+  constructor(
+    networkInstance: NetworkLibrary,
+    dlClient: DLClient,
+    versionCode: number,
+    platformCode: string,
+    lmSdkCallbacks: LMSDKCallbacks
+  ) {
     this.networkLibrary = networkInstance;
+    this.rnNetworkLibrary = new RNNetworkLibrary(
+      dlClient,
+      versionCode,
+      platformCode,
+      lmSdkCallbacks
+    );
   }
 
   public async validateUser(
@@ -64,7 +71,6 @@ class RNInitiateUserClient {
         this.networkLibrary.setAccessToken(accessToken);
         const refreshToken = resData?.data?.refresh_token;
         this.networkLibrary.setRefreshToken(refreshToken);
-
         // Handle the response and return the LMResponse object
         const responseData: InitiateUserResponse =
           ModelConverter.responseBodyParser(resData);
