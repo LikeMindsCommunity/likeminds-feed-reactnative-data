@@ -3,12 +3,12 @@ import {
   TokenValues,
   LMSDKCallbacks,
   NetworkLibrary,
-} from "@likeminds.community/feed-js-beta";
+} from "@likeminds.community/feed-js";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import LMResponse from "./lmresponse";
 import axios, { AxiosRequestConfig, AxiosResponse } from "axios";
 import { environment } from "../../environment";
-import { LMFeedClient as DLClient } from "@likeminds.community/feed-js-beta";
+import { LMFeedClient as DLClient } from "@likeminds.community/feed-js";
 
 class RNNetworkLibrary {
   private xApiKey: string | null;
@@ -19,7 +19,7 @@ class RNNetworkLibrary {
 
   constructor(
     dlClient: DLClient,
-    versionCode:number,
+    versionCode: number,
     platformCode: string,
     lmSdkCallbacks: LMSDKCallbacks
   ) {
@@ -36,20 +36,15 @@ class RNNetworkLibrary {
     AsyncStorage.setItem(TokenValues.LOCAL_API_KEY, apiKey);
   }
 
-  public setAccessTokenInLocalStorage(token: string) {
-    AsyncStorage.setItem(TokenValues.LOCAL_ACCESS_TOKEN, token);
+  public setTokens(accessToken: string, refreshToken: string) {
+    AsyncStorage.setItem(TokenValues.LOCAL_ACCESS_TOKEN, accessToken);
+    AsyncStorage.setItem(TokenValues.LOCAL_REFRESH_TOKEN, refreshToken);
   }
 
-  public setRefreshTokenInLocalStorage(token: string) {
-    AsyncStorage.setItem(TokenValues.LOCAL_REFRESH_TOKEN, token);
-  }
-
-  public getAccessTokenFromRNLocalStorage() {
-    return AsyncStorage.getItem(TokenValues.LOCAL_ACCESS_TOKEN);
-  }
-
-  public getRefreshTokenFromRNLocalStorage() {
-    return AsyncStorage.getItem(TokenValues.LOCAL_REFRESH_TOKEN);
+  public getTokens() {
+    const accessToken = AsyncStorage.getItem(TokenValues.LOCAL_ACCESS_TOKEN);
+    const refreshToken = AsyncStorage.getItem(TokenValues.LOCAL_REFRESH_TOKEN);
+    return { accessToken, refreshToken };
   }
 
   public getApiKeyFromRNLocalStorage() {
@@ -123,8 +118,7 @@ class RNNetworkLibrary {
             await this.lmSdkCallbacks.onRefreshTokenExpired();
           this.networkLibrary.setAccessToken(accessToken);
           this.networkLibrary.setRefreshToken(refreshToken);
-          this.setAccessTokenInLocalStorage(accessToken);
-          this.setRefreshTokenInLocalStorage(refreshToken);
+          this.setTokens(accessToken, refreshToken);
         } else {
           await this.networkLibrary.onRefreshAccessToken();
         }

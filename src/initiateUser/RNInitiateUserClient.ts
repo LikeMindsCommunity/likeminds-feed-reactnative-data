@@ -3,15 +3,15 @@ import {
   ValidateUserRequest,
   API,
   LMSDKCallbacks,
-} from "@likeminds.community/feed-js-beta";
-import NetworkLibrary from "@likeminds.community/feed-js-beta/dist/core/services/networklibrary";
-import {
-  InitiateUserResponse,
-  ValidateUserResponse,
-} from "@likeminds.community/feed-js-beta/dist/shared/models/api-responses/initiateUserResponse";
+} from "@likeminds.community/feed-js";
+import NetworkLibrary from "@likeminds.community/feed-js/dist/core/services/networklibrary";
+import { InitiateUserResponse } from "@likeminds.community/feed-js/dist/types/api-responses/initiateUserResponse";
 import RNNetworkLibrary from "../core/services/networkLibrary";
 import { ModelConverter } from "../utils/ModelConverter";
-import { LMFeedClient as DLClient } from "@likeminds.community/feed-js-beta";
+import { LMFeedClient as DLClient } from "@likeminds.community/feed-js";
+import LMResponse from "src/core/services/lmresponse";
+import { GetCommunityConfigurationsResponse } from "src/models/responseModels/GetCommunityConfigurationsResponse";
+import { ValidateUserResponse } from "@likeminds.community/feed-js/dist/types/api-responses/initiateUserResponse";
 
 class RNInitiateUserClient {
   private rnNetworkLibrary: RNNetworkLibrary;
@@ -82,6 +82,31 @@ class RNInitiateUserClient {
           success: false,
           errorMessage: error,
         };
+      });
+  }
+
+  public async getCommunityConfigurations(): Promise<
+    LMResponse<GetCommunityConfigurationsResponse>
+  > {
+    return this.networkLibrary
+      .makeAuthenticatedRequest(`${API.COMMUNITY_CONFIGURATIONS}`)
+      .then((resData: any) => {
+        // Handle the response and return the LMResponse object
+        const responseData: GetCommunityConfigurationsResponse =
+          ModelConverter.responseBodyParser(resData.data);
+
+        return new LMResponse<GetCommunityConfigurationsResponse>(
+          responseData,
+          null,
+          true
+        );
+      })
+      .catch((error) => {
+        return new LMResponse<GetCommunityConfigurationsResponse>(
+          null,
+          error.message || "An error occurred",
+          false
+        );
       });
   }
 }

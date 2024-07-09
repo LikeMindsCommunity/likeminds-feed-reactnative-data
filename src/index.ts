@@ -31,35 +31,36 @@ import {
   AttachmentMeta,
   NetworkLibrary,
   Like,
-} from "@likeminds.community/feed-js-beta";
-import { SubmitPollVoteRequest } from "@likeminds.community/feed-js-beta/dist/poll/model/SubmitPollVoteRequest";
-import { AddPollOptionRequest } from "@likeminds.community/feed-js-beta/dist/poll/model/AddPollOptionRequest";
-import { GetPollVotesRequest } from "@likeminds.community/feed-js-beta/dist/poll/model/GetPollVotesRequest";
-import { GetFeedResponse } from "@likeminds.community/feed-js-beta/dist/universalfeed/model/GetFeedResponse";
-import { IPost } from "@likeminds.community/feed-js-beta/dist/shared/models/post";
-import { IOgTag } from "@likeminds.community/feed-js-beta/dist/shared/models/ogTags";
-import { IUser } from "@likeminds.community/feed-js-beta/dist/shared/models/user";
-import { IMenuItem } from "@likeminds.community/feed-js-beta/dist/shared/models/menuItem";
-import { AddCommentResponse } from "@likeminds.community/feed-js-beta/dist/comment/model/AddCommentResponse";
-import { GetCommentResponse } from "@likeminds.community/feed-js-beta/dist/comment/model/GetCommentResponse";
-import { IComment } from "@likeminds.community/feed-js-beta/dist/shared/models/comment";
-import { EditCommentResponse } from "@likeminds.community/feed-js-beta/dist/comment/model/EditCommentResponse";
+} from "@likeminds.community/feed-js";
+import { SubmitPollVoteRequest } from "@likeminds.community/feed-js/dist/poll/model/SubmitPollVoteRequest";
+import { AddPollOptionRequest } from "@likeminds.community/feed-js/dist/poll/model/AddPollOptionRequest";
+import { GetPollVotesRequest } from "@likeminds.community/feed-js/dist/poll/model/GetPollVotesRequest";
+import { GetFeedResponse } from "@likeminds.community/feed-js/dist/universalfeed/model/GetFeedResponse";
+import { IPost } from "@likeminds.community/feed-js/dist/shared/models/post";
+import { IOgTag } from "@likeminds.community/feed-js/dist/shared/models/ogTags";
+import { IUser } from "@likeminds.community/feed-js/dist/shared/models/user";
+import { IMenuItem } from "@likeminds.community/feed-js/dist/shared/models/menuItem";
+import { AddCommentResponse } from "@likeminds.community/feed-js/dist/comment/model/AddCommentResponse";
+import { GetCommentResponse } from "@likeminds.community/feed-js/dist/comment/model/GetCommentResponse";
+import { IComment } from "@likeminds.community/feed-js/dist/shared/models/comment";
+import { EditCommentResponse } from "@likeminds.community/feed-js/dist/comment/model/EditCommentResponse";
 import {
   IMemberRight,
   IMemberState,
-} from "@likeminds.community/feed-js-beta/dist/shared/models/memberRights";
+} from "@likeminds.community/feed-js/dist/shared/models/memberRights";
 import {
   IActivities,
   IActivity,
-} from "@likeminds.community/feed-js-beta/dist/shared/models/activity";
-import { IMember } from "@likeminds.community/feed-js-beta/dist/initiateUser/model/GetAllMembersResponse";
-import { LMFeedTopics } from "@likeminds.community/feed-js-beta/dist//post/model/GetTopicsResponse";
-import { GetPostLikesResponse } from "@likeminds.community/feed-js-beta/dist/post/model/GetPostLikesResponse";
-// import Like from "@likeminds.community/feed-js-beta/dist/post/model/Like";
+} from "@likeminds.community/feed-js/dist/shared/models/activity";
+import { IMember } from "@likeminds.community/feed-js/dist/initiateUser/model/GetAllMembersResponse";
+import { LMFeedTopics } from "@likeminds.community/feed-js/dist//post/model/GetTopicsResponse";
+import { GetPostLikesResponse } from "@likeminds.community/feed-js/dist/post/model/GetPostLikesResponse";
+// import Like from "@likeminds.community/feed-js/dist/post/model/Like";
 import DBLibrary from "./core/services/networkLibrary";
 import RNInitiateUserClient from "./initiateUser/RNInitiateUserClient";
-// import NetworkLibrary from "@likeminds.community/feed-js-beta/dist/core/services/networklibrary";
-import { LMFeedClient as DLClient } from "@likeminds.community/feed-js-beta";
+// import NetworkLibrary from "@likeminds.community/feed-js/dist/core/services/networklibrary";
+import { LMFeedClient as DLClient } from "@likeminds.community/feed-js";
+import { GetCommunityConfigurationsResponse } from "./models/responseModels/GetCommunityConfigurationsResponse";
 
 class LMFeedClient {
   private rnInitiateUserClient: RNInitiateUserClient;
@@ -114,7 +115,7 @@ class LMFeedClient {
     this.dlClient.setLMSDKCallbacks(this.lmSdkCallbacks);
     this.dlClient.build();
     this.networkLibrary = this.dlClient.getNetworkLibrary();
-    
+
     this.rnInitiateUserClient = new RNInitiateUserClient(
       this.networkLibrary,
       this.dlClient,
@@ -131,13 +132,10 @@ class LMFeedClient {
     return this;
   }
 
-  public setAccessTokenInLocalStorage(token: string) {
-    this.dbLibrary.setAccessTokenInLocalStorage(token);
+  public setTokens(accessToken: string, refreshToken: string) {
+    this.dbLibrary.setTokens(accessToken, refreshToken);
   }
 
-  public setRefreshTokenInLocalStorage(token: string) {
-    this.dbLibrary.setRefreshTokenInLocalStorage(token);
-  }
   public setApiKeyInLocalStorage(apiKey: string) {
     this.dbLibrary.setApiKeyInLocalStorage(apiKey);
   }
@@ -151,12 +149,8 @@ class LMFeedClient {
     return this.dbLibrary.getApiKeyFromRNLocalStorage();
   }
 
-  public getAccessTokenFromLocalStorage() {
-    return this.dbLibrary.getAccessTokenFromRNLocalStorage();
-  }
-
-  public getRefreshTokenFromLocalStorage() {
-    return this.dbLibrary.getRefreshTokenFromRNLocalStorage();
+  public getTokens() {
+    return this.dbLibrary.getTokens();
   }
 
   public getAccessToken() {
@@ -187,6 +181,15 @@ class LMFeedClient {
       return initiateUserResponse;
     } catch (error) {
       console.error("Error while initiating the user:", error);
+      throw error;
+    }
+  }
+
+  async getCommunityConfigurations() {
+    try {
+      return await this.rnInitiateUserClient.getCommunityConfigurations();
+    } catch (error) {
+      console.log("Error while getting configuration", error);
       throw error;
     }
   }
@@ -540,4 +543,5 @@ export {
   LMSDKCallbacks,
   GetPostLikesResponse,
   Like,
+  GetCommunityConfigurationsResponse,
 };
