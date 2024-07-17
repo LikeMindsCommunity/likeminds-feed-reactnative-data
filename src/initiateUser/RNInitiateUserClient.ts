@@ -9,8 +9,6 @@ import { InitiateUserResponse } from "@likeminds.community/feed-js/dist/types/ap
 import RNNetworkLibrary from "../core/services/networkLibrary";
 import { ModelConverter } from "../utils/ModelConverter";
 import { LMFeedClient as DLClient } from "@likeminds.community/feed-js";
-import LMResponse from "src/core/services/lmresponse";
-import { GetCommunityConfigurationsResponse } from "src/models/responseModels/GetCommunityConfigurationsResponse";
 import { ValidateUserResponse } from "@likeminds.community/feed-js/dist/types/api-responses/initiateUserResponse";
 
 class RNInitiateUserClient {
@@ -82,31 +80,6 @@ class RNInitiateUserClient {
           success: false,
           errorMessage: error,
         };
-      });
-  }
-
-  public async getCommunityConfigurations(): Promise<
-    LMResponse<GetCommunityConfigurationsResponse>
-  > {
-    return this.networkLibrary
-      .makeAuthenticatedRequest(`${API.COMMUNITY_CONFIGURATIONS}`)
-      .then((resData: any) => {
-        // Handle the response and return the LMResponse object
-        const responseData: GetCommunityConfigurationsResponse =
-          ModelConverter.responseBodyParser(resData.data);
-
-        return new LMResponse<GetCommunityConfigurationsResponse>(
-          responseData,
-          null,
-          true
-        );
-      })
-      .catch((error) => {
-        return new LMResponse<GetCommunityConfigurationsResponse>(
-          null,
-          error.message || "An error occurred",
-          false
-        );
       });
   }
 }

@@ -187,7 +187,7 @@ class LMFeedClient {
 
   async getCommunityConfigurations() {
     try {
-      return await this.rnInitiateUserClient.getCommunityConfigurations();
+      return this.dlClient.getCommunityConfigurations();
     } catch (error) {
       console.log("Error while getting configuration", error);
       throw error;
