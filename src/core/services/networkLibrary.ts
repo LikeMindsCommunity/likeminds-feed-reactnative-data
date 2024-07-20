@@ -41,17 +41,21 @@ class RNNetworkLibrary {
     AsyncStorage.setItem(TokenValues.LOCAL_REFRESH_TOKEN, refreshToken);
   }
 
-  public getTokens() {
-    const accessToken = AsyncStorage.getItem(TokenValues.LOCAL_ACCESS_TOKEN);
-    const refreshToken = AsyncStorage.getItem(TokenValues.LOCAL_REFRESH_TOKEN);
+  public async getTokens() {
+    const accessToken = await AsyncStorage.getItem(
+      TokenValues.LOCAL_ACCESS_TOKEN
+    );
+    const refreshToken = await AsyncStorage.getItem(
+      TokenValues.LOCAL_REFRESH_TOKEN
+    );
     return { accessToken, refreshToken };
   }
 
-  public getApiKeyFromRNLocalStorage() {
-    return AsyncStorage.getItem(TokenValues.LOCAL_API_KEY);
+  public async getApiKeyFromRNLocalStorage() {
+    return await AsyncStorage.getItem(TokenValues.LOCAL_API_KEY);
   }
-  public getUserFromRNLocalStorage() {
-    return AsyncStorage.getItem(TokenValues.LOCAL_USER);
+  public async getUserFromRNLocalStorage() {
+    return await AsyncStorage.getItem(TokenValues.LOCAL_USER);
   }
   private async makeRequest<T>(
     url: string,

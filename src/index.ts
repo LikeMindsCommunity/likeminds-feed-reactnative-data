@@ -142,22 +142,22 @@ class LMFeedClient {
   public setUserInLocalStorage(user: string) {
     this.dbLibrary.setUserInLocalStorage(user);
   }
-  public getUserFromLocalStorage() {
+  public async getUserFromLocalStorage() {
     return this.dbLibrary.getUserFromRNLocalStorage();
   }
-  public getApiKeyFromLocalStorage() {
+  public async getApiKeyFromLocalStorage() {
     return this.dbLibrary.getApiKeyFromRNLocalStorage();
   }
 
-  public getTokens() {
+  public async getTokens() {
     return this.dbLibrary.getTokens();
   }
 
-  public getAccessToken() {
+  public async getAccessToken() {
     return this.networkLibrary.getAccessToken();
   }
 
-  public getRefreshToken() {
+  public async getRefreshToken() {
     return this.networkLibrary.getRefreshToken();
   }
 

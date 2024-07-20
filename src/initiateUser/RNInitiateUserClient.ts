@@ -57,6 +57,14 @@ class RNInitiateUserClient {
   public async initiateUser(
     request: InitiateUserRequest
   ): Promise<InitiateUserResponse> {
+    this.rnNetworkLibrary.setApiKeyInLocalStorage(request?.apikey);
+    this.rnNetworkLibrary.setUserInLocalStorage(
+      JSON.stringify({
+        apiKey: request?.apikey,
+        userName: request?.userName,
+        userUniqueId: request?.uuid,
+      })
+    );
     const params = ModelConverter.requestBodyGenerator(request);
 
     return this.rnNetworkLibrary
@@ -72,6 +80,8 @@ class RNInitiateUserClient {
         // Handle the response and return the LMResponse object
         const responseData: InitiateUserResponse =
           ModelConverter.responseBodyParser(resData);
+
+        // save user and apikey from here only into localStorage
 
         return responseData;
       })
