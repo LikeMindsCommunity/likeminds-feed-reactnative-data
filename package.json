@@ -36,7 +36,7 @@
     "url": "git+https://github.com/LikeMindsCommunity/ReactNative-Chat-Data.git"
   },
   "dependencies": {
-    "@likeminds.community/feed-js": "1.9.1",
+    "@likeminds.community/feed-js": "1.9.2",
     "@react-native-async-storage/async-storage": "1.23.1",
     "axios": "0.22.0",
     "react": "18.2.0",
