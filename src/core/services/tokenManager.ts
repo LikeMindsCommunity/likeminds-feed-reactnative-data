@@ -1,7 +1,7 @@
-import { LMSDKCallbacks } from "@likeminds.community/feed-js-beta";
+import { LMSDKCallbacks } from "@likeminds.community/feed-js";
 import axios, { AxiosRequestConfig } from "axios";
 import { environment } from "../../environment";
-import { API } from "@likeminds.community/feed-js-beta/dist/shared/constants/api.constant";
+import { API } from "@likeminds.community/feed-js/dist/shared/constants/api.constant";
 
 // TokenManager.ts
 class TokenManager {
