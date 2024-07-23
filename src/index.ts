@@ -55,10 +55,8 @@ import {
 import { IMember } from "@likeminds.community/feed-js/dist/initiateUser/model/GetAllMembersResponse";
 import { LMFeedTopics } from "@likeminds.community/feed-js/dist//post/model/GetTopicsResponse";
 import { GetPostLikesResponse } from "@likeminds.community/feed-js/dist/post/model/GetPostLikesResponse";
-// import Like from "@likeminds.community/feed-js/dist/post/model/Like";
 import DBLibrary from "./core/services/networkLibrary";
 import RNInitiateUserClient from "./initiateUser/RNInitiateUserClient";
-// import NetworkLibrary from "@likeminds.community/feed-js/dist/core/services/networklibrary";
 import { LMFeedClient as DLClient } from "@likeminds.community/feed-js";
 import { GetCommunityConfigurationsResponse } from "./models/responseModels/GetCommunityConfigurationsResponse";
 

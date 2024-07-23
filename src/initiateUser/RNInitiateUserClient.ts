@@ -77,12 +77,10 @@ class RNInitiateUserClient {
         this.networkLibrary.setAccessToken(accessToken);
         const refreshToken = resData?.data?.refresh_token;
         this.networkLibrary.setRefreshToken(refreshToken);
+        this.rnNetworkLibrary.setTokens(accessToken, refreshToken);
         // Handle the response and return the LMResponse object
         const responseData: InitiateUserResponse =
           ModelConverter.responseBodyParser(resData);
-
-        // save user and apikey from here only into localStorage
-
         return responseData;
       })
       .catch((error) => {
