@@ -59,6 +59,7 @@ import DBLibrary from "./core/services/networkLibrary";
 import RNInitiateUserClient from "./initiateUser/RNInitiateUserClient";
 import { LMFeedClient as DLClient } from "@likeminds.community/feed-js";
 import { GetCommunityConfigurationsResponse } from "./models/responseModels/GetCommunityConfigurationsResponse";
+import { EditProfile } from "./models/responseModels/EditProfile";
 
 class LMFeedClient {
   private rnInitiateUserClient: RNInitiateUserClient;
@@ -181,6 +182,10 @@ class LMFeedClient {
       console.error("Error while initiating the user:", error);
       throw error;
     }
+  }
+
+  async editProfile(editProfile: EditProfile) {
+    return this.dlClient.editProfile(editProfile);
   }
 
   async getCommunityConfigurations() {
