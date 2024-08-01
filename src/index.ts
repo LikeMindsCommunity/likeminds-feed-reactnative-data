@@ -60,8 +60,6 @@ import RNInitiateUserClient from "./initiateUser/RNInitiateUserClient";
 import { LMFeedClient as DLClient } from "@likeminds.community/feed-js";
 import { GetCommunityConfigurationsResponse } from "./models/responseModels/GetCommunityConfigurationsResponse";
 import { EditProfile } from "./models/responseModels/EditProfile";
-import LMResponse from "./core/services/lmresponse";
-import { Nothing } from "./models/responseModels/Nothing";
 
 class LMFeedClient {
   private rnInitiateUserClient: RNInitiateUserClient;
@@ -186,7 +184,7 @@ class LMFeedClient {
     }
   }
 
-  async editProfile(editProfile: EditProfile): Promise<LMResponse<Nothing>> {
+  async editProfile(editProfile: EditProfile) {
     return this.dlClient.editProfile(editProfile);
   }
 
