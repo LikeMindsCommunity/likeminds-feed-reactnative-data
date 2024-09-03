@@ -1,11 +1,42 @@
 pipeline {
-  agent {label 'localMachine'}
-  tools {nodejs "nodejs"}
-  stages {
-    stage('Test') {
-      steps {
-        sh 'node --version'
-      }
+    agent {label 'localMachine'}
+    tools {nodejs "nodejs"}
+
+    stages {
+        stage('Preparation') {
+            steps {
+                cleanWs()
+            }
+        }
+
+        stage('Install Dependencies') {
+            steps {
+                sh 'npm install'
+            }
+        }
+
+        stage('Build') {
+            steps {
+                sh 'npm run build'
+            }
+        }
+
+        stage('Package') {
+            steps {
+                sh 'npm pack'
+            }
+        }
+
+        stage('Archive Package') {
+            steps {
+                archiveArtifacts artifacts: '*.tgz', fingerprint: true
+            }
+        }
     }
-  }
+
+    post {
+        always {
+            cleanWs()
+        }
+    }
 }
