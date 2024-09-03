@@ -1,7 +1,5 @@
 pipeline {
-  agent {
-    docker { image 'node:16-alpine' }
-  }
+  agent (label 'localMachine')
   stages {
     stage('Test') {
       steps {
