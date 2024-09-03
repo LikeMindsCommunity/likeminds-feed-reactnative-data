@@ -3,12 +3,7 @@ pipeline {
     tools {nodejs "nodejs"}
 
     stages {
-        stage('Preparation') {
-            steps {
-                cleanWs()
-            }
-        }
-
+        
         stage('Install Dependencies') {
             steps {
                 sh 'npm install'
