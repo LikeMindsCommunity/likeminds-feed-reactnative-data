@@ -1,5 +1,5 @@
 pipeline {
-  agent (label 'localMachine')
+  agent {label 'localMachine'}
   stages {
     stage('Test') {
       steps {
