@@ -1,9 +1,10 @@
 pipeline {
   agent {label 'localMachine'}
+  tools {nodejs "nodejs"}
   stages {
     stage('Test') {
       steps {
-        sh '/usr/local/bin/npm node --version'
+        sh 'node --version'
       }
     }
   }
