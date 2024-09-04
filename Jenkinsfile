@@ -19,8 +19,8 @@ pipeline {
                             // echo "Uploaded file is available at: ${filePath}"
 
                             // List the file to verify it's there
-                            echo "$pkg"
-                            echo "$WORKSPACE"
+                            echo "${WORKSPACE}"
+                            echo "${filePath}"
 
                         }
 
