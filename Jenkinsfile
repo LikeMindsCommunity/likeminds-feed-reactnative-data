@@ -7,7 +7,7 @@ pipeline {
     }
 
     parameters {
-        file description: 'upload file', name: ''
+        file description: 'upload file', name: 'test'
     }
 
     stages {
