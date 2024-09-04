@@ -16,10 +16,10 @@ pipeline {
             steps{
                 withFileParameter('pkg') { filePath ->
                             // Print the path to the uploaded file
-                            echo "Uploaded file is available at: ${filePath}"
+                            // echo "Uploaded file is available at: ${filePath}"
 
                             // List the file to verify it's there
-                            sh "ls -l ${filePath}"
+                            sh "cat $pkg"
 
                         }
 
