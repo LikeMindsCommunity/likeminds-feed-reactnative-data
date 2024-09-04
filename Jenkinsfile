@@ -12,7 +12,7 @@ pipeline {
 
         stage('file upload'){
             steps{
-                echo "${fileupload.tgz}"
+                // echo "${fileupload.tgz}"
                 sh "ls"
             }
         }
