@@ -14,7 +14,7 @@ pipeline {
 
         stage('file upload'){
             steps{
-                echo "done"
+                sh "ls"
             }
         }
         
