@@ -20,7 +20,11 @@ pipeline {
 
                             // List the file to verify it's there
                             echo "${WORKSPACE}"
-                            echo "${filePath}"
+                            // Access the file path
+                            def filePathh = params.pkg
+
+                                // Print the file path
+                                echo "Uploaded file is located at: ${filePathh}"
 
                         }
 
