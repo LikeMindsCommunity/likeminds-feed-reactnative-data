@@ -19,12 +19,14 @@ pipeline {
                             // echo "Uploaded file is available at: ${filePath}"
 
                             // List the file to verify it's there
-                            sh "cat $pkg"
+                            echo "$pkg"
+                            echo "$WORKSPACE"
 
                         }
 
             }
         }
+        
         
         // stage('Install Dependencies') {
         //     steps {
