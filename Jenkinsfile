@@ -7,25 +7,14 @@ pipeline {
     }
 
     parameters {
-        base64File description: 'node package', name: 'pkg'
+        file description: 'upload file', name: ''
     }
 
     stages {
 
         stage('file upload'){
             steps{
-                withFileParameter('pkg') { filePath ->
-                            // Print the path to the uploaded file
-                            // echo "Uploaded file is available at: ${filePath}"
-
-                            // List the file to verify it's there
-                            echo "${WORKSPACE}"
-                            // Access the file path
-                                // Print the file path
-                                echo "Uploaded file is located at: ${params.pkg}"
-
-                        }
-
+                echo "done"
             }
         }
         
