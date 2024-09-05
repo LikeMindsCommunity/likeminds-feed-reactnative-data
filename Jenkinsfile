@@ -6,13 +6,15 @@ pipeline {
         buildDiscarder logRotator(daysToKeepStr: '3', numToKeepStr: '1')
     }
     parameters {
-        base64File 'file'
+        stashedFile 'FILE'
     }
     stages {
 
         stage('file upload'){
             steps{
-                sh 'echo $file | base64 -d > likeminds.community-rn-core.tgz'
+                unstash 'FILE'
+                sh 'mv FILE $FILE_FILENAME'
+                sh 'ls'
             }
         }
         
