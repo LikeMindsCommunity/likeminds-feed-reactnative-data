@@ -3,7 +3,7 @@ pipeline {
     tools {nodejs "nodejs"}
 
     options {
-        buildDiscarder logRotator(daysToKeepStr: '3', numToKeepStr: '10')
+        buildDiscarder logRotator(daysToKeepStr: '3', numToKeepStr: '1')
     }
     parameters {
         base64File 'file'
@@ -12,7 +12,7 @@ pipeline {
 
         stage('file upload'){
             steps{
-                sh 'echo $file | base64 -d > config.txt'
+                sh 'echo $file | base64 -d > pgk.tgz'
                 sh "ls"
             }
         }
