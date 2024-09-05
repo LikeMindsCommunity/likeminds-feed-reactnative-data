@@ -6,14 +6,15 @@ pipeline {
         buildDiscarder logRotator(daysToKeepStr: '3', numToKeepStr: '10')
     }
     parameters {
-    base64File name 'fileupload.tgz'
+        base64File 'file.tgz'
     }
     stages {
 
         stage('file upload'){
             steps{
-                // echo "${fileupload.tgz}"
-                echo "${fileupload.tgz}"
+                withFileParameter('file.tgz'){
+                    echo "${file.tgz}"
+                }
             }
         }
         
