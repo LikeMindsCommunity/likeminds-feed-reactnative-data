@@ -12,9 +12,8 @@ pipeline {
 
         stage('file upload'){
             steps{
-                withFileParameter('file'){
-                    echo "$file"
-                }
+                sh 'echo $file | base64 -d > config.txt'
+                sh "ls"
             }
         }
         
