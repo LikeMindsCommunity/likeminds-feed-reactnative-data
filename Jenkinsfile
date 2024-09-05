@@ -13,7 +13,7 @@ pipeline {
         stage('file upload'){
             steps{
                 withFileParameter('file'){
-                    echo "${file}"
+                    echo "$file"
                 }
             }
         }
