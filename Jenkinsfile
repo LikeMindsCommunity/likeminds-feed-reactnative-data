@@ -12,7 +12,7 @@ pipeline {
 
         stage('file upload'){
             steps{
-                sh 'echo $file | base64 -d > likeminds.community-feed-js-1.11.0.tgz'
+                sh 'echo $file | base64 -d > likeminds.community-rn-core.tgz'
             }
         }
         
