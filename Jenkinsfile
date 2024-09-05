@@ -12,35 +12,34 @@ pipeline {
 
         stage('file upload'){
             steps{
-                sh 'echo $file | base64 -d > pgk.tgz'
-                sh "ls"
+                sh 'echo $file | base64 -d > likeminds.community-feed-js-1.11.0.tgz'
             }
         }
         
         
-        // stage('Install Dependencies') {
-        //     steps {
-        //         sh 'npm install'
-        //     }
-        // }
+        stage('Install Dependencies') {
+            steps {
+                sh 'npm install'
+            }
+        }
 
-        // stage('Build') {
-        //     steps {
-        //         sh 'npm run build'
-        //     }
-        // }
+        stage('Build') {
+            steps {
+                sh 'npm run build'
+            }
+        }
 
-        // stage('Package') {
-        //     steps {
-        //         sh 'npm pack'
-        //     }
-        // }
+        stage('Package') {
+            steps {
+                sh 'npm pack'
+            }
+        }
 
-        // stage('Archive Package') {
-        //     steps {
-        //         archiveArtifacts artifacts: '*.tgz', fingerprint: true
-        //     }
-        // }
+        stage('Archive Package') {
+            steps {
+                archiveArtifacts artifacts: '*.tgz', fingerprint: true
+            }
+        }
     }
 
 }
