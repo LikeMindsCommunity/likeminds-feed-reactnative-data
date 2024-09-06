@@ -1,19 +1,21 @@
 pipeline {
-    agent {label 'localMachine'}
+    agent any
     tools {nodejs "nodejs"}
 
     options {
-        buildDiscarder logRotator(daysToKeepStr: '3', numToKeepStr: '1')
+        buildDiscarder logRotator(daysToKeepStr: '7', numToKeepStr: '1')
     }
+
     parameters {
-        stashedFile 'FILE'
+        stashedFile 'feed_js_data_pacakge'
     }
+
     stages {
 
         stage('file upload'){
             steps{
-                unstash 'FILE'
-                sh 'mv FILE $FILE_FILENAME'
+                unstash 'feed_js_data_pacakge'
+                sh 'mv feed_js_data_pacakge $feed_js_data_pacakge_FILENAME'
                 sh 'ls'
             }
         }
@@ -41,6 +43,12 @@ pipeline {
             steps {
                 archiveArtifacts artifacts: '*.tgz', fingerprint: true
             }
+        }
+    }
+
+    post {
+        always {
+            cleanWs()
         }
     }
 
