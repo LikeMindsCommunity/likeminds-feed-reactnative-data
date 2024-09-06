@@ -7,15 +7,15 @@ pipeline {
     }
 
     parameters {
-        stashedFile 'feed_js_data_pacakge'
+        stashedFile 'feed_js_data_package'
     }
 
     stages {
 
         stage('file upload'){
             steps{
-                unstash 'feed_js_data_pacakge'
-                sh 'mv feed_js_data_pacakge $feed_js_data_pacakge_FILENAME'
+                unstash 'feed_js_data_package'
+                sh 'mv feed_js_data_package $feed_js_data_package_FILENAME'
                 sh 'ls'
             }
         }
