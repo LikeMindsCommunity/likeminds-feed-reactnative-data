@@ -24,6 +24,8 @@ pipeline {
         stage('Install Dependencies') {
             steps {
                 sh 'npm install'
+                sh 'npm uninstall @likeminds.community/feed-js'
+                sh 'npm install $feed_js_data_package_FILENAME'
             }
         }
 
@@ -46,10 +48,10 @@ pipeline {
         }
     }
 
-    post {
-        always {
-            cleanWs()
-        }
-    }
+    // post {
+    //     always {
+    //         cleanWs()
+    //     }
+    // }
 
 }
