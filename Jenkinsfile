@@ -6,6 +6,8 @@ pipeline {
         buildDiscarder logRotator(daysToKeepStr: '7', numToKeepStr: '1')
     }
 
+    
+
     parameters {
         stashedFile 'feed_js_data_package'
     }
