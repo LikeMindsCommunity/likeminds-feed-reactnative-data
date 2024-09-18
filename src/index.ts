@@ -31,6 +31,16 @@ import {
   AttachmentMeta,
   NetworkLibrary,
   Like,
+  Activity,
+  Community,
+  User,
+  Member,
+  OgTag,
+  Post,
+  Reply,
+  ReportObject,
+  TaggingMember,
+  Topic,
 } from "@likeminds.community/feed-js";
 import { SubmitPollVoteRequest } from "@likeminds.community/feed-js/dist/poll/model/SubmitPollVoteRequest";
 import { AddPollOptionRequest } from "@likeminds.community/feed-js/dist/poll/model/AddPollOptionRequest";
@@ -547,4 +557,14 @@ export {
   GetPostLikesResponse,
   Like,
   GetCommunityConfigurationsResponse,
+  Activity,
+  Community,
+  User,
+  Member,
+  OgTag,
+  Post,
+  Reply,
+  ReportObject,
+  TaggingMember,
+  Topic,
 };
