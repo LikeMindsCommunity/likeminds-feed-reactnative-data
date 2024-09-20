@@ -34,37 +34,25 @@ import {
   Activity,
   Community,
   User,
-  Member,
   OgTag,
   Post,
   Reply,
-  ReportObject,
-  TaggingMember,
+  ReportTag,
+  TaggingUser,
   Topic,
+  MenuItem,
+  GetNotification,
+  MemberRight,
 } from "@likeminds.community/feed-js";
 import { SubmitPollVoteRequest } from "@likeminds.community/feed-js/dist/poll/model/SubmitPollVoteRequest";
 import { AddPollOptionRequest } from "@likeminds.community/feed-js/dist/poll/model/AddPollOptionRequest";
 import { GetPollVotesRequest } from "@likeminds.community/feed-js/dist/poll/model/GetPollVotesRequest";
-import { GetFeedResponse } from "@likeminds.community/feed-js/dist/universalfeed/model/GetFeedResponse";
-import { IPost } from "@likeminds.community/feed-js/dist/shared/models/post";
-import { IOgTag } from "@likeminds.community/feed-js/dist/shared/models/ogTags";
-import { IUser } from "@likeminds.community/feed-js/dist/shared/models/user";
-import { IMenuItem } from "@likeminds.community/feed-js/dist/shared/models/menuItem";
-import { AddCommentResponse } from "@likeminds.community/feed-js/dist/comment/model/AddCommentResponse";
-import { GetCommentResponse } from "@likeminds.community/feed-js/dist/comment/model/GetCommentResponse";
-import { IComment } from "@likeminds.community/feed-js/dist/shared/models/comment";
-import { EditCommentResponse } from "@likeminds.community/feed-js/dist/comment/model/EditCommentResponse";
-import {
-  IMemberRight,
-  IMemberState,
-} from "@likeminds.community/feed-js/dist/shared/models/memberRights";
-import {
-  IActivities,
-  IActivity,
-} from "@likeminds.community/feed-js/dist/shared/models/activity";
-import { IMember } from "@likeminds.community/feed-js/dist/initiateUser/model/GetAllMembersResponse";
-import { LMFeedTopics } from "@likeminds.community/feed-js/dist//post/model/GetTopicsResponse";
-import { GetPostLikesResponse } from "@likeminds.community/feed-js/dist/post/model/GetPostLikesResponse";
+import { GetUniversalFeed } from "@likeminds.community/feed-js";
+import { PostComment } from "@likeminds.community/feed-js";
+import { GetCommentDetails } from "@likeminds.community/feed-js";
+import { EditComment } from "@likeminds.community/feed-js";
+import { GetTopics } from "@likeminds.community/feed-js";
+import { GetPostLikes } from "@likeminds.community/feed-js";
 import DBLibrary from "./core/services/networkLibrary";
 import RNInitiateUserClient from "./initiateUser/RNInitiateUserClient";
 import { LMFeedClient as DLClient } from "@likeminds.community/feed-js";
@@ -79,6 +67,7 @@ class LMFeedClient {
   private platformCode: string | null = null;
   private versionCode: number | null = null;
   private apiKey: string | null = null;
+  // private isBeta: boolean | null = null
   private lmSdkCallbacks: LMSDKCallbacks;
 
   constructor() {
@@ -523,48 +512,40 @@ export {
   SavePostRequest,
   GetTaggingListRequest,
   GetFeedRequest,
-  GetFeedResponse,
-  IPost,
-  IOgTag,
-  IUser,
-  IMenuItem,
-  IComment,
+  GetUniversalFeed,
   GetReportTagsRequest,
   PostReportRequest,
   AddCommentRequest,
-  AddCommentResponse,
+  PostComment,
   GetCommentRequest,
-  GetCommentResponse,
+  GetCommentDetails,
   ReplyCommentRequest,
   DeleteCommentRequest,
-  EditCommentResponse,
+  EditComment,
   LikeCommentRequest,
   GetCommentLikesRequest,
-  IMemberState,
-  IMemberRight,
   GetNotificationFeedRequest,
   MarkReadNotificationRequest,
-  IActivities,
-  IActivity,
   GetAllMembersRequest,
-  IMember,
   EditCommentRequest,
   GetTopicsRequest,
-  LMFeedTopics,
+  GetTopics,
   ValidateUserRequest,
   RegisterDeviceRequest,
   LMSDKCallbacks,
-  GetPostLikesResponse,
+  GetPostLikes,
   Like,
   GetCommunityConfigurationsResponse,
   Activity,
   Community,
   User,
-  Member,
   OgTag,
   Post,
   Reply,
-  ReportObject,
-  TaggingMember,
+  ReportTag,
+  TaggingUser,
+  GetNotification,
   Topic,
+  MenuItem,
+  MemberRight,
 };

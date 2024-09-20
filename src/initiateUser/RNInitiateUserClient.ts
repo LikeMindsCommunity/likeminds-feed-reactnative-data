@@ -5,11 +5,12 @@ import {
   LMSDKCallbacks,
 } from "@likeminds.community/feed-js";
 import NetworkLibrary from "@likeminds.community/feed-js/dist/core/services/networklibrary";
-import { InitiateUserResponse } from "@likeminds.community/feed-js/dist/types/api-responses/initiateUserResponse";
+import { InitiateUser } from "@likeminds.community/feed-js";
 import RNNetworkLibrary from "../core/services/networkLibrary";
 import { ModelConverter } from "../utils/ModelConverter";
 import { LMFeedClient as DLClient } from "@likeminds.community/feed-js";
-import { ValidateUserResponse } from "@likeminds.community/feed-js/dist/types/api-responses/initiateUserResponse";
+import { ValidateUser } from "@likeminds.community/feed-js";
+import LMResponse from "@likeminds.community/feed-js/dist/core/services/lmresponse";
 
 class RNInitiateUserClient {
   private rnNetworkLibrary: RNNetworkLibrary;
@@ -33,7 +34,7 @@ class RNInitiateUserClient {
 
   public async validateUser(
     request: ValidateUserRequest
-  ): Promise<ValidateUserResponse> {
+  ): Promise<LMResponse<ValidateUser>> {
     this.networkLibrary.setAccessToken(request.accessToken);
     this.networkLibrary.setRefreshToken(request.refreshToken);
 
@@ -41,13 +42,14 @@ class RNInitiateUserClient {
       .makeAuthenticatedRequest(`${API.SDK_INITIATE}`)
       .then((resData: any) => {
         // Handle the response and return the LMResponse object
-        const responseData: ValidateUserResponse =
+        const responseData: LMResponse<ValidateUser> =
           ModelConverter.responseBodyParser(resData);
 
         return responseData;
       })
       .catch((error) => {
         return {
+          data: undefined,
           success: false,
           errorMessage: error,
         };
@@ -56,7 +58,7 @@ class RNInitiateUserClient {
 
   public async initiateUser(
     request: InitiateUserRequest
-  ): Promise<InitiateUserResponse> {
+  ): Promise<LMResponse<InitiateUser>> {
     this.rnNetworkLibrary.setApiKeyInLocalStorage(request?.apikey);
     this.rnNetworkLibrary.setUserInLocalStorage(
       JSON.stringify({
@@ -79,12 +81,13 @@ class RNInitiateUserClient {
         this.networkLibrary.setRefreshToken(refreshToken);
         this.rnNetworkLibrary.setTokens(accessToken, refreshToken);
         // Handle the response and return the LMResponse object
-        const responseData: InitiateUserResponse =
+        const responseData: LMResponse<InitiateUser> =
           ModelConverter.responseBodyParser(resData);
         return responseData;
       })
       .catch((error) => {
         return {
+          data: undefined,
           success: false,
           errorMessage: error,
         };
