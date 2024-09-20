@@ -67,7 +67,6 @@ class LMFeedClient {
   private platformCode: string | null = null;
   private versionCode: number | null = null;
   private apiKey: string | null = null;
-  // private isBeta: boolean | null = null
   private lmSdkCallbacks: LMSDKCallbacks;
 
   constructor() {
