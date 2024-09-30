@@ -58,6 +58,7 @@ import RNInitiateUserClient from "./initiateUser/RNInitiateUserClient";
 import { LMFeedClient as DLClient } from "@likeminds.community/feed-js";
 import { GetCommunityConfigurationsResponse } from "./models/responseModels/GetCommunityConfigurationsResponse";
 import { EditProfile } from "./models/responseModels/EditProfile";
+import { FilterComment } from "@likeminds.community/feed-js";
 
 class LMFeedClient {
   private rnInitiateUserClient: RNInitiateUserClient;
@@ -547,4 +548,5 @@ export {
   Topic,
   MenuItem,
   MemberRight,
+  FilterComment,
 };
