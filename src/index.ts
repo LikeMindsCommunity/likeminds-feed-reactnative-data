@@ -345,10 +345,10 @@ class LMFeedClient {
       const getCommentResponse = await this.dlClient.getComments(
         postId,
         GetCommentRequest.builder()
-          .setcommentId(commentId)
-          .setpage(pageNo)
-          .setpageSize(10)
-          .setpostId(postId)
+          .setCommentId(commentId)
+          .setPage(pageNo)
+          .setPageSize(10)
+          .setPostId(postId)
           .build(),
         commentId,
         pageNo
