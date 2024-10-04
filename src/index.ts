@@ -43,6 +43,8 @@ import {
   MenuItem,
   GetNotification,
   MemberRight,
+  UpdateUserTopicsRequest,
+  GetUserTopicsRequest,
 } from "@likeminds.community/feed-js";
 import { SubmitPollVoteRequest } from "@likeminds.community/feed-js/dist/poll/model/SubmitPollVoteRequest";
 import { AddPollOptionRequest } from "@likeminds.community/feed-js/dist/poll/model/AddPollOptionRequest";
@@ -262,6 +264,26 @@ class LMFeedClient {
   async getTopics(request: GetTopicsRequest) {
     try {
       const getPostResponse = await this.dlClient.getTopics(request);
+      return getPostResponse;
+    } catch (error) {
+      console.log("Error while getting post:", error);
+      throw error;
+    }
+  }
+
+  async updateUserTopics(request: UpdateUserTopicsRequest) {
+    try {
+      const getPostResponse = await this.dlClient.updateUserTopics(request);
+      return getPostResponse;
+    } catch (error) {
+      console.log("Error while getting post:", error);
+      throw error;
+    }
+  }
+
+  async getUserTopics(request: GetUserTopicsRequest) {
+    try {
+      const getPostResponse = await this.dlClient.getUserTopics(request);
       return getPostResponse;
     } catch (error) {
       console.log("Error while getting post:", error);
@@ -529,6 +551,8 @@ export {
   GetAllMembersRequest,
   EditCommentRequest,
   GetTopicsRequest,
+  UpdateUserTopicsRequest,
+  GetUserTopicsRequest,
   GetTopics,
   ValidateUserRequest,
   RegisterDeviceRequest,
