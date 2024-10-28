@@ -5,6 +5,7 @@ import {
   DeleteCommentRequest,
   DeletePostRequest,
   EditCommentRequest,
+  HidePostRequest,
   EditPostRequest,
   GetAllMembersRequest,
   GetCommentLikesRequest,
@@ -298,6 +299,17 @@ class LMFeedClient {
       throw error;
     }
   }
+
+  async hidePost(request: HidePostRequest) {
+    try {
+      const hidePostResponse = await this.dlClient.hidePost(request);
+      return hidePostResponse;
+    } catch (error) {
+      console.log("Error while hiding post:", error);
+      throw error;
+    }
+  }
+
   async getTaggingList(request: GetTaggingListRequest) {
     try {
       const gettaggingListResponse =
@@ -504,6 +516,7 @@ export {
   AttachmentMeta,
   DecodeURLRequest,
   DeletePostRequest,
+  HidePostRequest,
   EditPostRequest,
   GetPostLikesRequest,
   GetPostRequest,
