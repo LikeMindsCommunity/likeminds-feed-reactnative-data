@@ -65,6 +65,7 @@ class RNInitiateUserClient {
         apiKey: request?.apikey,
         userName: request?.userName,
         userUniqueId: request?.uuid,
+        imageUrl: request?.imageUrl
       })
     );
     const params = ModelConverter.requestBodyGenerator(request);
