@@ -60,6 +60,8 @@ import { LMFeedClient as DLClient } from "@likeminds.community/feed-js";
 import { GetCommunityConfigurationsResponse } from "./models/responseModels/GetCommunityConfigurationsResponse";
 import { EditProfile } from "./models/responseModels/EditProfile";
 import { FilterComment } from "@likeminds.community/feed-js";
+import LMResponse from "./core/services/lmresponse";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 class LMFeedClient {
   private rnInitiateUserClient: RNInitiateUserClient;
@@ -146,6 +148,25 @@ class LMFeedClient {
   }
   public async getApiKeyFromLocalStorage() {
     return this.dbLibrary.getApiKeyFromRNLocalStorage();
+  }
+
+  public async getIsUserOnboardingDone() {
+    try {
+      const isUserOnboardingDone = await AsyncStorage.getItem("isUserOnboardingDone");
+      if (isUserOnboardingDone == null) return new LMResponse(null, "isUserOnboardingDone key not found", false);
+      return new LMResponse(JSON.parse(isUserOnboardingDone), "isUserOnboardingDone key found", true);
+    } catch (error) {
+      return new LMResponse(null, "Fetching operation failed.", false);
+    }
+  }
+
+  public async setIsUserOnboardingDone(isUserOnboardingDone: boolean) {
+    try {
+      await AsyncStorage.setItem("isUserOnboardingDone", JSON.stringify(isUserOnboardingDone));
+      return new LMResponse(isUserOnboardingDone, null, true);
+    } catch (error) {
+      return new LMResponse(null, "Update operation failed.", false);
+    }
   }
 
   public async getTokens() {
