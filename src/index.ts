@@ -44,6 +44,8 @@ import {
   MenuItem,
   GetNotification,
   MemberRight,
+  UpdateUserTopicsRequest,
+  GetUserTopicsRequest,
 } from "@likeminds.community/feed-js";
 import { SubmitPollVoteRequest } from "@likeminds.community/feed-js/dist/poll/model/SubmitPollVoteRequest";
 import { AddPollOptionRequest } from "@likeminds.community/feed-js/dist/poll/model/AddPollOptionRequest";
@@ -283,10 +285,30 @@ class LMFeedClient {
 
   async getTopics(request: GetTopicsRequest) {
     try {
-      const getPostResponse = await this.dlClient.getTopics(request);
-      return getPostResponse;
+      const getTopicsResponse = await this.dlClient.getTopics(request);
+      return getTopicsResponse;
     } catch (error) {
-      console.log("Error while getting post:", error);
+      console.log("Error while getting topics:", error);
+      throw error;
+    }
+  }
+
+  async updateUserTopics(request: UpdateUserTopicsRequest) {
+    try {
+      const updateUserTopicsResponse = await this.dlClient.updateUserTopics(request);
+      return updateUserTopicsResponse;
+    } catch (error) {
+      console.log("Error while updating user topics:", error);
+      throw error;
+    }
+  }
+
+  async getUserTopics(request: GetUserTopicsRequest) {
+    try {
+      const getUserTopicsResponse = await this.dlClient.getUserTopics(request);
+      return getUserTopicsResponse;
+    } catch (error) {
+      console.log("Error while getting user topics:", error);
       throw error;
     }
   }
@@ -563,6 +585,8 @@ export {
   GetAllMembersRequest,
   EditCommentRequest,
   GetTopicsRequest,
+  UpdateUserTopicsRequest,
+  GetUserTopicsRequest,
   GetTopics,
   ValidateUserRequest,
   RegisterDeviceRequest,
