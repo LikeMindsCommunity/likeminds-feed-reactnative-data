@@ -298,7 +298,7 @@ class LMFeedClient {
       const getPostResponse = await this.dlClient.updateUserTopics(request);
       return getPostResponse;
     } catch (error) {
-      console.log("Error while getting post:", error);
+      console.log("Error while updating user topics:", error);
       throw error;
     }
   }
@@ -308,7 +308,7 @@ class LMFeedClient {
       const getPostResponse = await this.dlClient.getUserTopics(request);
       return getPostResponse;
     } catch (error) {
-      console.log("Error while getting post:", error);
+      console.log("Error while getting user topics:", error);
       throw error;
     }
   }
