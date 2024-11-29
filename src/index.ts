@@ -288,7 +288,7 @@ class LMFeedClient {
       const getTopicsResponse = await this.dlClient.getTopics(request);
       return getTopicsResponse;
     } catch (error) {
-      console.log("Error while getting post:", error);
+      console.log("Error while getting topics:", error);
       throw error;
     }
   }
