@@ -285,8 +285,8 @@ class LMFeedClient {
 
   async getTopics(request: GetTopicsRequest) {
     try {
-      const getPostResponse = await this.dlClient.getTopics(request);
-      return getPostResponse;
+      const getTopicsResponse = await this.dlClient.getTopics(request);
+      return getTopicsResponse;
     } catch (error) {
       console.log("Error while getting post:", error);
       throw error;
@@ -295,8 +295,8 @@ class LMFeedClient {
 
   async updateUserTopics(request: UpdateUserTopicsRequest) {
     try {
-      const getPostResponse = await this.dlClient.updateUserTopics(request);
-      return getPostResponse;
+      const updateUserTopicsResponse = await this.dlClient.updateUserTopics(request);
+      return updateUserTopicsResponse;
     } catch (error) {
       console.log("Error while updating user topics:", error);
       throw error;
@@ -305,8 +305,8 @@ class LMFeedClient {
 
   async getUserTopics(request: GetUserTopicsRequest) {
     try {
-      const getPostResponse = await this.dlClient.getUserTopics(request);
-      return getPostResponse;
+      const getUserTopicsResponse = await this.dlClient.getUserTopics(request);
+      return getUserTopicsResponse;
     } catch (error) {
       console.log("Error while getting user topics:", error);
       throw error;
