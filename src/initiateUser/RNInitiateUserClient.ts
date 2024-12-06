@@ -10,7 +10,7 @@ import RNNetworkLibrary from "../core/services/networkLibrary";
 import { ModelConverter } from "../utils/ModelConverter";
 import { LMFeedClient as DLClient } from "@likeminds.community/feed-js";
 import { ValidateUser } from "@likeminds.community/feed-js";
-import LMResponse from "@likeminds.community/feed-js/dist/core/services/lmresponse";
+import LMResponse from "src/core/services/lmresponse";
 import { Nothing } from "src/models/responseModels/Nothing";
 import { LogoutUserRequest } from "src/models/requestModels/LogoutUserRequest";
 import RegisterDeviceRequest from "src/models/requestModels/RegisterDeviceRequest";
@@ -37,7 +37,7 @@ class RNInitiateUserClient {
 
   public async validateUser(
     request: ValidateUserRequest
-  ): Promise<LMResponse<ValidateUser>> {
+  ) {
     this.networkLibrary.setAccessToken(request.accessToken);
     this.networkLibrary.setRefreshToken(request.refreshToken);
 
@@ -61,7 +61,7 @@ class RNInitiateUserClient {
 
   public async initiateUser(
     request: InitiateUserRequest
-  ): Promise<LMResponse<InitiateUser>> {
+  ) {
     this.rnNetworkLibrary.setApiKeyInLocalStorage(request?.apikey);
     this.rnNetworkLibrary.setUserInLocalStorage(
       JSON.stringify({
@@ -126,7 +126,7 @@ class RNInitiateUserClient {
 
   public async logoutUser(
     logoutRequest: LogoutUserRequest
-  ): Promise<LMResponse<Nothing>> {
+  ) {
     const tokens = await this.rnNetworkLibrary.getTokens();
     const accessToken = tokens?.accessToken;
     const refreshToken = tokens?.refreshToken;
