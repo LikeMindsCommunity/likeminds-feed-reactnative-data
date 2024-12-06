@@ -46,7 +46,6 @@ import {
   MemberRight,
   UpdateUserTopicsRequest,
   GetUserTopicsRequest,
-  TokenValues,
 } from "@likeminds.community/feed-js";
 import { SubmitPollVoteRequest } from "@likeminds.community/feed-js/dist/poll/model/SubmitPollVoteRequest";
 import { AddPollOptionRequest } from "@likeminds.community/feed-js/dist/poll/model/AddPollOptionRequest";
@@ -65,6 +64,7 @@ import { EditProfile } from "./models/responseModels/EditProfile";
 import { FilterComment } from "@likeminds.community/feed-js";
 import LMResponse from "./core/services/lmresponse";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { TokenValues } from "./enums/TokenValues";
 
 class LMFeedClient {
   private rnInitiateUserClient: RNInitiateUserClient;
@@ -565,9 +565,9 @@ class LMFeedClient {
       throw error;
     }
   }
-  async logoutUser() {
+  async logoutUser(logoutRequest: LogoutUserRequest) {
     try {
-      return await this.rnInitiateUserClient.logoutUser();
+      return await this.rnInitiateUserClient.logoutUser(logoutRequest);
     } catch (error) {
       console.log("Error while logging out user", error);
       throw error;

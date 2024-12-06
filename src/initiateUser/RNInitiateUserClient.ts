@@ -96,7 +96,7 @@ class RNInitiateUserClient {
       });
   }
 
-  public async logoutUser(): Promise<LMResponse<Nothing>> {
+  public async logoutUser(logoutRequest: LogoutUserRequest): Promise<LMResponse<Nothing>> {
     const tokens = await this.rnNetworkLibrary.getTokens();
     const accessToken = tokens?.accessToken;
     const refreshToken = tokens?.refreshToken;
@@ -113,6 +113,9 @@ class RNInitiateUserClient {
         `${API.USER_LOGOUT}`,
         {
           method: "POST",
+          headers: {
+            "x-device-id": logoutRequest?.deviceId,
+          },
           data: {
             refresh_token: refreshToken,
           },

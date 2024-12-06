@@ -1,6 +1,5 @@
 // NetworkLibrary
 import {
-  TokenValues,
   LMSDKCallbacks,
   NetworkLibrary,
 } from "@likeminds.community/feed-js";
@@ -9,6 +8,7 @@ import LMResponse from "./lmresponse";
 import axios, { AxiosRequestConfig, AxiosResponse } from "axios";
 import { environment } from "../../environment";
 import { LMFeedClient as DLClient } from "@likeminds.community/feed-js";
+import { TokenValues } from "src/enums/TokenValues";
 
 class RNNetworkLibrary {
   private xApiKey: string | null;

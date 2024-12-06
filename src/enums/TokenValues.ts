@@ -1,0 +1,7 @@
+export declare enum TokenValues {
+    LOCAL_ACCESS_TOKEN = "LOCAL_ACCESS_TOKEN",
+    LOCAL_REFRESH_TOKEN = "LOCAL_REFRESH_TOKEN",
+    LOCAL_USER = "LOCAL_USER",
+    LOCAL_API_KEY = "LOCAL_API_KEY",
+    IS_USER_ONBOARDING_DONE = "isUserOnboardingDone"
+}

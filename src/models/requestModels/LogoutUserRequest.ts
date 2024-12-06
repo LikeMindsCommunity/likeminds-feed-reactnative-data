@@ -1,0 +1,3 @@
+interface LogoutUserRequest {
+  deviceId?: string;
+}
