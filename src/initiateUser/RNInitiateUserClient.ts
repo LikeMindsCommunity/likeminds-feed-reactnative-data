@@ -35,9 +35,7 @@ class RNInitiateUserClient {
     );
   }
 
-  public async validateUser(
-    request: ValidateUserRequest
-  ) {
+  public async validateUser(request: ValidateUserRequest) {
     this.networkLibrary.setAccessToken(request.accessToken);
     this.networkLibrary.setRefreshToken(request.refreshToken);
 
@@ -59,9 +57,7 @@ class RNInitiateUserClient {
       });
   }
 
-  public async initiateUser(
-    request: InitiateUserRequest
-  ) {
+  public async initiateUser(request: InitiateUserRequest) {
     this.rnNetworkLibrary.setApiKeyInLocalStorage(request?.apikey);
     this.rnNetworkLibrary.setUserInLocalStorage(
       JSON.stringify({
@@ -101,11 +97,14 @@ class RNInitiateUserClient {
   public async validateRegisterDeviceRequest(
     request: RegisterDeviceRequest
   ): Promise<LMResponse<any>> {
-    const params = ModelConverter.requestBodyGenerator(request);
+    console.log("request ==", request);
     return this.rnNetworkLibrary
       .makeAuthenticatedRequest(`${API.USER_DEVICE_PUSH}`, {
         method: "POST",
-        data: params,
+        data: { token: request?.token },
+        headers: {
+          "x-device-id": request?.deviceId,
+        },
       })
       .then((response: any) => {
         // Handle the response and return the LMResponse object
@@ -124,9 +123,7 @@ class RNInitiateUserClient {
       });
   }
 
-  public async logoutUser(
-    logoutRequest: LogoutUserRequest
-  ) {
+  public async logoutUser(logoutRequest: LogoutUserRequest) {
     const tokens = await this.rnNetworkLibrary.getTokens();
     const accessToken = tokens?.accessToken;
     const refreshToken = tokens?.refreshToken;

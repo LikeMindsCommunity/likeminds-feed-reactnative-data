@@ -1,8 +1,5 @@
 // NetworkLibrary
-import {
-  LMSDKCallbacks,
-  NetworkLibrary,
-} from "@likeminds.community/feed-js";
+import { LMSDKCallbacks, NetworkLibrary } from "@likeminds.community/feed-js";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import LMResponse from "./lmresponse";
 import axios, { AxiosRequestConfig, AxiosResponse } from "axios";
@@ -97,8 +94,7 @@ class RNNetworkLibrary {
     requestConfig.headers["Content-Type"] = "application/json";
     requestConfig.headers["x-version-code"] = this.versionCode?.toString();
 
-    const device = url.includes("user/device/push");
-    if (!device) requestConfig.headers["x-platform-code"] = this.platformCode;
+    requestConfig.headers["x-platform-code"] = this.platformCode;
 
     const cFeed = url.includes("community/feed");
     if (cFeed) requestConfig.headers["x-accept-version"] = "v2";
