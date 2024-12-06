@@ -1,3 +1,3 @@
-interface LogoutUserRequest {
+export interface LogoutUserRequest {
   deviceId?: string;
 }

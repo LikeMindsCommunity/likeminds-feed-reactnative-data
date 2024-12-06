@@ -1,4 +1,4 @@
-export declare enum TokenValues {
+export enum TokenValues {
     LOCAL_ACCESS_TOKEN = "LOCAL_ACCESS_TOKEN",
     LOCAL_REFRESH_TOKEN = "LOCAL_REFRESH_TOKEN",
     LOCAL_USER = "LOCAL_USER",

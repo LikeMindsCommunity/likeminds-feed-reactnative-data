@@ -12,6 +12,7 @@ import { LMFeedClient as DLClient } from "@likeminds.community/feed-js";
 import { ValidateUser } from "@likeminds.community/feed-js";
 import LMResponse from "@likeminds.community/feed-js/dist/core/services/lmresponse";
 import { Nothing } from "src/models/responseModels/Nothing";
+import { LogoutUserRequest } from "src/models/requestModels/LogoutUserRequest";
 
 class RNInitiateUserClient {
   private rnNetworkLibrary: RNNetworkLibrary;

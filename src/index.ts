@@ -65,6 +65,7 @@ import { FilterComment } from "@likeminds.community/feed-js";
 import LMResponse from "./core/services/lmresponse";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { TokenValues } from "./enums/TokenValues";
+import { LogoutUserRequest } from "./models/requestModels/LogoutUserRequest";
 
 class LMFeedClient {
   private rnInitiateUserClient: RNInitiateUserClient;
