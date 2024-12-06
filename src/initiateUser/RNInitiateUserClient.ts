@@ -13,6 +13,7 @@ import { ValidateUser } from "@likeminds.community/feed-js";
 import LMResponse from "@likeminds.community/feed-js/dist/core/services/lmresponse";
 import { Nothing } from "src/models/responseModels/Nothing";
 import { LogoutUserRequest } from "src/models/requestModels/LogoutUserRequest";
+import RegisterDeviceRequest from "src/models/requestModels/RegisterDeviceRequest";
 
 class RNInitiateUserClient {
   private rnNetworkLibrary: RNNetworkLibrary;
@@ -97,7 +98,35 @@ class RNInitiateUserClient {
       });
   }
 
-  public async logoutUser(logoutRequest: LogoutUserRequest): Promise<LMResponse<Nothing>> {
+  public async validateRegisterDeviceRequest(
+    request: RegisterDeviceRequest
+  ): Promise<LMResponse<any>> {
+    const params = ModelConverter.requestBodyGenerator(request);
+    return this.rnNetworkLibrary
+      .makeAuthenticatedRequest(`${API.USER_DEVICE_PUSH}`, {
+        method: "POST",
+        data: params,
+      })
+      .then((response: any) => {
+        // Handle the response and return the LMResponse object
+        const responseData: any = ModelConverter.responseBodyParser(
+          response.data
+        );
+
+        return new LMResponse<any>(responseData, null, true);
+      })
+      .catch((error) => {
+        return new LMResponse<any>(
+          null,
+          error.message || "An error occurred",
+          false
+        );
+      });
+  }
+
+  public async logoutUser(
+    logoutRequest: LogoutUserRequest
+  ): Promise<LMResponse<Nothing>> {
     const tokens = await this.rnNetworkLibrary.getTokens();
     const accessToken = tokens?.accessToken;
     const refreshToken = tokens?.refreshToken;
@@ -105,7 +134,7 @@ class RNInitiateUserClient {
     // If both tokens are null, clear local storage and DB
     if (!accessToken && !refreshToken) {
       this.rnNetworkLibrary.clearLocalStorage();
-      return { success: true };
+      return { success: true, data: null, errorMessage: null };
     }
 
     try {
@@ -126,10 +155,13 @@ class RNInitiateUserClient {
         this.rnNetworkLibrary.clearLocalStorage();
         return {
           success: true,
+          data: null,
+          errorMessage: null,
         };
       }
     } catch (error) {
       return {
+        data: null,
         success: false,
         errorMessage: error,
       };

@@ -528,7 +528,7 @@ class LMFeedClient {
   }
   async validateRegisterDeviceRequest(request: RegisterDeviceRequest) {
     try {
-      return await this.dlClient.validateRegisterDeviceRequest(request);
+      return await this.rnInitiateUserClient.validateRegisterDeviceRequest(request);
     } catch (error) {
       console.log("Error while validate register device", error);
       throw error;
