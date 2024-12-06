@@ -57,6 +57,22 @@ class RNNetworkLibrary {
   public async getUserFromRNLocalStorage() {
     return await AsyncStorage.getItem(TokenValues.LOCAL_USER);
   }
+
+  public async clearLocalStorage() {
+    try {
+      const keys = [
+        TokenValues.LOCAL_ACCESS_TOKEN,
+        TokenValues.LOCAL_REFRESH_TOKEN,
+        TokenValues.LOCAL_API_KEY,
+        TokenValues.LOCAL_USER,
+        TokenValues.IS_USER_ONBOARDING_DONE,
+      ];
+      await AsyncStorage.multiRemove(keys);
+    } catch (error) {
+      console.log("Error while removing keys in local storage", error);
+      throw error;
+    }
+  }
   private async makeRequest<T>(
     url: string,
     config?: AxiosRequestConfig

@@ -46,6 +46,7 @@ import {
   MemberRight,
   UpdateUserTopicsRequest,
   GetUserTopicsRequest,
+  TokenValues,
 } from "@likeminds.community/feed-js";
 import { SubmitPollVoteRequest } from "@likeminds.community/feed-js/dist/poll/model/SubmitPollVoteRequest";
 import { AddPollOptionRequest } from "@likeminds.community/feed-js/dist/poll/model/AddPollOptionRequest";
@@ -154,9 +155,20 @@ class LMFeedClient {
 
   public async getIsUserOnboardingDone() {
     try {
-      const isUserOnboardingDone = await AsyncStorage.getItem("isUserOnboardingDone");
-      if (isUserOnboardingDone == null) return new LMResponse(null, "isUserOnboardingDone key not found", false);
-      return new LMResponse(JSON.parse(isUserOnboardingDone), "isUserOnboardingDone key found", true);
+      const isUserOnboardingDone = await AsyncStorage.getItem(
+        TokenValues.IS_USER_ONBOARDING_DONE
+      );
+      if (isUserOnboardingDone == null)
+        return new LMResponse(
+          null,
+          "isUserOnboardingDone key not found",
+          false
+        );
+      return new LMResponse(
+        JSON.parse(isUserOnboardingDone),
+        "isUserOnboardingDone key found",
+        true
+      );
     } catch (error) {
       return new LMResponse(null, "Fetching operation failed.", false);
     }
@@ -164,7 +176,10 @@ class LMFeedClient {
 
   public async setIsUserOnboardingDone(isUserOnboardingDone: boolean) {
     try {
-      await AsyncStorage.setItem("isUserOnboardingDone", JSON.stringify(isUserOnboardingDone));
+      await AsyncStorage.setItem(
+        TokenValues.IS_USER_ONBOARDING_DONE,
+        JSON.stringify(isUserOnboardingDone)
+      );
       return new LMResponse(isUserOnboardingDone, null, true);
     } catch (error) {
       return new LMResponse(null, "Update operation failed.", false);
@@ -295,7 +310,8 @@ class LMFeedClient {
 
   async updateUserTopics(request: UpdateUserTopicsRequest) {
     try {
-      const updateUserTopicsResponse = await this.dlClient.updateUserTopics(request);
+      const updateUserTopicsResponse =
+        await this.dlClient.updateUserTopics(request);
       return updateUserTopicsResponse;
     } catch (error) {
       console.log("Error while updating user topics:", error);
@@ -549,6 +565,14 @@ class LMFeedClient {
       throw error;
     }
   }
+  async logoutUser() {
+    try {
+      return await this.rnInitiateUserClient.logoutUser();
+    } catch (error) {
+      console.log("Error while logging out user", error);
+      throw error;
+    }
+  }
 }
 
 export {
@@ -607,4 +631,5 @@ export {
   MenuItem,
   MemberRight,
   FilterComment,
+  TokenValues,
 };
