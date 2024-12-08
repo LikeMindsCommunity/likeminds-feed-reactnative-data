@@ -35,7 +35,9 @@ class RNInitiateUserClient {
     );
   }
 
-  public async validateUser(request: ValidateUserRequest) {
+  public async validateUser(
+    request: ValidateUserRequest
+  ): Promise<LMResponse<ValidateUser>> {
     this.networkLibrary.setAccessToken(request.accessToken);
     this.networkLibrary.setRefreshToken(request.refreshToken);
 
@@ -49,15 +51,13 @@ class RNInitiateUserClient {
         return responseData;
       })
       .catch((error) => {
-        return {
-          data: undefined,
-          success: false,
-          errorMessage: error,
-        };
+        return new LMResponse<any>(undefined, error, false);
       });
   }
 
-  public async initiateUser(request: InitiateUserRequest) {
+  public async initiateUser(
+    request: InitiateUserRequest
+  ): Promise<LMResponse<InitiateUser>> {
     this.rnNetworkLibrary.setApiKeyInLocalStorage(request?.apikey);
     this.rnNetworkLibrary.setUserInLocalStorage(
       JSON.stringify({
@@ -86,18 +86,13 @@ class RNInitiateUserClient {
         return responseData;
       })
       .catch((error) => {
-        return {
-          data: undefined,
-          success: false,
-          errorMessage: error,
-        };
+        return new LMResponse<any>(undefined, error, false);
       });
   }
 
-  public async validateRegisterDeviceRequest(
+  public async registerDevice(
     request: RegisterDeviceRequest
-  ): Promise<LMResponse<any>> {
-    console.log("request ==", request);
+  ): Promise<LMResponse<Nothing>> {
     return this.rnNetworkLibrary
       .makeAuthenticatedRequest(`${API.USER_DEVICE_PUSH}`, {
         method: "POST",
@@ -123,7 +118,9 @@ class RNInitiateUserClient {
       });
   }
 
-  public async logoutUser(logoutRequest: LogoutUserRequest) {
+  public async logoutUser(
+    logoutUserRequest: LogoutUserRequest
+  ): Promise<LMResponse<Nothing>> {
     const tokens = await this.rnNetworkLibrary.getTokens();
     const accessToken = tokens?.accessToken;
     const refreshToken = tokens?.refreshToken;
@@ -131,7 +128,7 @@ class RNInitiateUserClient {
     // If both tokens are null, clear local storage and DB
     if (!accessToken && !refreshToken) {
       this.rnNetworkLibrary.clearLocalStorage();
-      return { success: true, data: null, errorMessage: null };
+      return new LMResponse<any>(null, null, true);
     }
 
     try {
@@ -141,7 +138,7 @@ class RNInitiateUserClient {
         {
           method: "POST",
           headers: {
-            "x-device-id": logoutRequest?.deviceId,
+            "x-device-id": logoutUserRequest?.deviceId,
           },
           data: {
             refresh_token: refreshToken,
@@ -150,18 +147,10 @@ class RNInitiateUserClient {
       );
       if (response.getStatus()) {
         this.rnNetworkLibrary.clearLocalStorage();
-        return {
-          success: true,
-          data: null,
-          errorMessage: null,
-        };
+        return new LMResponse<any>(null, null, true);
       }
     } catch (error) {
-      return {
-        data: null,
-        success: false,
-        errorMessage: error,
-      };
+      return new LMResponse<any>(null, error, false);
     }
   }
 }

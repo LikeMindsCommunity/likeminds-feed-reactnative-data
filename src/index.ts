@@ -162,12 +162,12 @@ class LMFeedClient {
       if (isUserOnboardingDone == null)
         return new LMResponse(
           null,
-          "isUserOnboardingDone key not found",
+          "IS_USER_ONBOARDING_DONE key not found",
           false
         );
       return new LMResponse(
         JSON.parse(isUserOnboardingDone),
-        "isUserOnboardingDone key found",
+        "IS_USER_ONBOARDING_DONE key found",
         true
       );
     } catch (error) {
@@ -526,19 +526,11 @@ class LMFeedClient {
       throw error;
     }
   }
-  async validateRegisterDeviceRequest(request: RegisterDeviceRequest) {
+  async registerDevice(request: RegisterDeviceRequest) {
     try {
-      return await this.rnInitiateUserClient.validateRegisterDeviceRequest(request);
+      return await this.rnInitiateUserClient.registerDevice(request);
     } catch (error) {
       console.log("Error while validate register device", error);
-      throw error;
-    }
-  }
-  async registerDevice() {
-    try {
-      return await this.dlClient.registerDevice();
-    } catch (error) {
-      console.log("Error while register device", error);
       throw error;
     }
   }
