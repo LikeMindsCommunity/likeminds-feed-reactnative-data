@@ -51,7 +51,7 @@ class RNInitiateUserClient {
         return responseData;
       })
       .catch((error) => {
-        return new LMResponse<any>(undefined, error, false);
+        return new LMResponse<ValidateUser>(undefined, error, false);
       });
   }
 
@@ -86,7 +86,7 @@ class RNInitiateUserClient {
         return responseData;
       })
       .catch((error) => {
-        return new LMResponse<any>(undefined, error, false);
+        return new LMResponse<InitiateUser>(undefined, error, false);
       });
   }
 
@@ -107,10 +107,10 @@ class RNInitiateUserClient {
           response.data
         );
 
-        return new LMResponse<any>(responseData, null, true);
+        return new LMResponse<Nothing>(responseData, null, true);
       })
       .catch((error) => {
-        return new LMResponse<any>(
+        return new LMResponse<Nothing>(
           null,
           error.message || "An error occurred",
           false
@@ -128,7 +128,7 @@ class RNInitiateUserClient {
     // If both tokens are null, clear local storage and DB
     if (!accessToken && !refreshToken) {
       this.rnNetworkLibrary.clearLocalStorage();
-      return new LMResponse<any>(null, null, true);
+      return new LMResponse<Nothing>(null, null, true);
     }
 
     try {
@@ -147,10 +147,10 @@ class RNInitiateUserClient {
       );
       if (response.getStatus()) {
         this.rnNetworkLibrary.clearLocalStorage();
-        return new LMResponse<any>(null, null, true);
+        return new LMResponse<Nothing>(null, null, true);
       }
     } catch (error) {
-      return new LMResponse<any>(null, error, false);
+      return new LMResponse<Nothing>(null, error, false);
     }
   }
 }
