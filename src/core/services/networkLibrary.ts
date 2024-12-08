@@ -1,14 +1,11 @@
 // NetworkLibrary
-import {
-  TokenValues,
-  LMSDKCallbacks,
-  NetworkLibrary,
-} from "@likeminds.community/feed-js";
+import { LMSDKCallbacks, NetworkLibrary } from "@likeminds.community/feed-js";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import LMResponse from "./lmresponse";
 import axios, { AxiosRequestConfig, AxiosResponse } from "axios";
 import { environment } from "../../environment";
 import { LMFeedClient as DLClient } from "@likeminds.community/feed-js";
+import { TokenValues } from "../../enums/TokenValues";
 
 class RNNetworkLibrary {
   private xApiKey: string | null;
@@ -57,6 +54,22 @@ class RNNetworkLibrary {
   public async getUserFromRNLocalStorage() {
     return await AsyncStorage.getItem(TokenValues.LOCAL_USER);
   }
+
+  public async clearLocalStorage() {
+    try {
+      const keys = [
+        TokenValues.LOCAL_ACCESS_TOKEN,
+        TokenValues.LOCAL_REFRESH_TOKEN,
+        TokenValues.LOCAL_API_KEY,
+        TokenValues.LOCAL_USER,
+        TokenValues.IS_USER_ONBOARDING_DONE,
+      ];
+      await AsyncStorage.multiRemove(keys);
+    } catch (error) {
+      console.log("Error while removing keys in local storage", error);
+      throw error;
+    }
+  }
   private async makeRequest<T>(
     url: string,
     config?: AxiosRequestConfig
@@ -81,8 +94,7 @@ class RNNetworkLibrary {
     requestConfig.headers["Content-Type"] = "application/json";
     requestConfig.headers["x-version-code"] = this.versionCode?.toString();
 
-    const device = url.includes("user/device/push");
-    if (!device) requestConfig.headers["x-platform-code"] = this.platformCode;
+    requestConfig.headers["x-platform-code"] = this.platformCode;
 
     const cFeed = url.includes("community/feed");
     if (cFeed) requestConfig.headers["x-accept-version"] = "v2";

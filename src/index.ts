@@ -64,6 +64,8 @@ import { EditProfile } from "./models/responseModels/EditProfile";
 import { FilterComment } from "@likeminds.community/feed-js";
 import LMResponse from "./core/services/lmresponse";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { TokenValues } from "./enums/TokenValues";
+import { LogoutUserRequest } from "./models/requestModels/LogoutUserRequest";
 
 class LMFeedClient {
   private rnInitiateUserClient: RNInitiateUserClient;
@@ -154,9 +156,20 @@ class LMFeedClient {
 
   public async getIsUserOnboardingDone() {
     try {
-      const isUserOnboardingDone = await AsyncStorage.getItem("isUserOnboardingDone");
-      if (isUserOnboardingDone == null) return new LMResponse(null, "isUserOnboardingDone key not found", false);
-      return new LMResponse(JSON.parse(isUserOnboardingDone), "isUserOnboardingDone key found", true);
+      const isUserOnboardingDone = await AsyncStorage.getItem(
+        TokenValues.IS_USER_ONBOARDING_DONE
+      );
+      if (isUserOnboardingDone == null)
+        return new LMResponse(
+          null,
+          "IS_USER_ONBOARDING_DONE key not found",
+          false
+        );
+      return new LMResponse(
+        JSON.parse(isUserOnboardingDone),
+        "IS_USER_ONBOARDING_DONE key found",
+        true
+      );
     } catch (error) {
       return new LMResponse(null, "Fetching operation failed.", false);
     }
@@ -164,7 +177,10 @@ class LMFeedClient {
 
   public async setIsUserOnboardingDone(isUserOnboardingDone: boolean) {
     try {
-      await AsyncStorage.setItem("isUserOnboardingDone", JSON.stringify(isUserOnboardingDone));
+      await AsyncStorage.setItem(
+        TokenValues.IS_USER_ONBOARDING_DONE,
+        JSON.stringify(isUserOnboardingDone)
+      );
       return new LMResponse(isUserOnboardingDone, null, true);
     } catch (error) {
       return new LMResponse(null, "Update operation failed.", false);
@@ -295,7 +311,8 @@ class LMFeedClient {
 
   async updateUserTopics(request: UpdateUserTopicsRequest) {
     try {
-      const updateUserTopicsResponse = await this.dlClient.updateUserTopics(request);
+      const updateUserTopicsResponse =
+        await this.dlClient.updateUserTopics(request);
       return updateUserTopicsResponse;
     } catch (error) {
       console.log("Error while updating user topics:", error);
@@ -509,19 +526,11 @@ class LMFeedClient {
       throw error;
     }
   }
-  async validateRegisterDeviceRequest(request: RegisterDeviceRequest) {
+  async registerDevice(request: RegisterDeviceRequest) {
     try {
-      return await this.dlClient.validateRegisterDeviceRequest(request);
+      return await this.rnInitiateUserClient.registerDevice(request);
     } catch (error) {
       console.log("Error while validate register device", error);
-      throw error;
-    }
-  }
-  async registerDevice() {
-    try {
-      return await this.dlClient.registerDevice();
-    } catch (error) {
-      console.log("Error while register device", error);
       throw error;
     }
   }
@@ -546,6 +555,14 @@ class LMFeedClient {
       return await this.dlClient.getPollVotes(request);
     } catch (error) {
       console.log("Error while get poll votes", error);
+      throw error;
+    }
+  }
+  async logoutUser(logoutRequest: LogoutUserRequest) {
+    try {
+      return await this.rnInitiateUserClient.logoutUser(logoutRequest);
+    } catch (error) {
+      console.log("Error while logging out user", error);
       throw error;
     }
   }
@@ -607,4 +624,5 @@ export {
   MenuItem,
   MemberRight,
   FilterComment,
+  TokenValues,
 };
