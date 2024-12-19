@@ -157,7 +157,9 @@ class RNNetworkLibrary {
           });
       }
 
-      return new LMResponse<T>(null, error?.response?.data?.error_message, false);
+      if (error?.response && error?.response?.status) {
+        return new LMResponse<T>(null, error?.response?.data?.error_message, false);
+      }
 
     }
   }
