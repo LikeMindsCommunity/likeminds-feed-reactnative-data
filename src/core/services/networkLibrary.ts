@@ -127,6 +127,7 @@ class RNNetworkLibrary {
       const response = await this.makeRequest<{ data: T }>(url, requestConfig);
       return new LMResponse<T>(response?.data?.data, null, true);
     } catch (error) {
+      
       if (error?.response && error?.response?.status === 401) {
         // Access token expired, refresh the token and retry the request
         if (url.includes("user/refresh")) {
@@ -156,9 +157,8 @@ class RNNetworkLibrary {
           });
       }
 
-      if (error?.response && error?.response?.status >= 500) {
-        return new LMResponse<T>(null, error.message, false);
-      }
+      return new LMResponse<T>(null, error?.response?.data?.error_message, false);
+
     }
   }
 }
