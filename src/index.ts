@@ -558,7 +558,7 @@ class LMFeedClient {
       throw error;
     }
   }
-  async logoutUser(logoutRequest: LogoutUserRequest) {
+  async logoutUser(logoutRequest?: LogoutUserRequest) {
     try {
       return await this.rnInitiateUserClient.logoutUser(logoutRequest);
     } catch (error) {
