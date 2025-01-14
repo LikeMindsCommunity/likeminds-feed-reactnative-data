@@ -1,7 +1,7 @@
 {
   "name": "@likeminds.community/feed-rn",
-  "versionCode": "13",
-  "version": "1.3.8",
+  "versionCode": "14",
+  "version": "1.3.9",
   "description": "LikeMinds ReactNative SDK for chat APIs",
   "main": "dist/index.js",
   "module": "dist/index.m.js",
@@ -39,8 +39,8 @@
     "@likeminds.community/feed-js": "1.14.3",
     "@react-native-async-storage/async-storage": "1.23.1",
     "axios": "0.22.0",
-    "react": "18.2.0",
-    "react-native": "0.72.4"
+    "react": ">=18.2.0",
+    "react-native": ">=0.72.4"
   },
   "bugs": {
     "url": "https://github.com/LikeMindsCommunity/ReactNative-Chat-Data/issues"
