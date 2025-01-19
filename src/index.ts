@@ -46,6 +46,7 @@ import {
   MemberRight,
   UpdateUserTopicsRequest,
   GetUserTopicsRequest,
+  SearchPostsRequest,
 } from "@likeminds.community/feed-js";
 import { SubmitPollVoteRequest } from "@likeminds.community/feed-js/dist/poll/model/SubmitPollVoteRequest";
 import { AddPollOptionRequest } from "@likeminds.community/feed-js/dist/poll/model/AddPollOptionRequest";
@@ -566,6 +567,14 @@ class LMFeedClient {
       throw error;
     }
   }
+  async searchPosts(request: SearchPostsRequest) {
+    try {
+      return await this.dlClient.searchPosts(request);
+    } catch (error) {
+      console.log("Error while searching posts", error);
+      throw error
+    }
+  }
 }
 
 export {
@@ -602,6 +611,7 @@ export {
   GetAllMembersRequest,
   EditCommentRequest,
   GetTopicsRequest,
+  SearchPostsRequest,
   UpdateUserTopicsRequest,
   GetUserTopicsRequest,
   GetTopics,
