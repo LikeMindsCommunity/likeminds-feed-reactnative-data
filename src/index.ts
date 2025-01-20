@@ -11,6 +11,7 @@ import {
   GetCommentLikesRequest,
   GetCommentRequest,
   GetFeedRequest,
+  GetPersonalisedFeedRequest,
   GetNotificationFeedRequest,
   GetPostLikesRequest,
   GetPostRequest,
@@ -46,6 +47,7 @@ import {
   MemberRight,
   UpdateUserTopicsRequest,
   GetUserTopicsRequest,
+  PostSeenRequest,
 } from "@likeminds.community/feed-js";
 import { SubmitPollVoteRequest } from "@likeminds.community/feed-js/dist/poll/model/SubmitPollVoteRequest";
 import { AddPollOptionRequest } from "@likeminds.community/feed-js/dist/poll/model/AddPollOptionRequest";
@@ -385,7 +387,17 @@ class LMFeedClient {
       const getFeedResponse = await this.dlClient.getFeed(request);
       return getFeedResponse;
     } catch (error) {
-      console.log("Error while getting tagging list:", error);
+      console.log("Error while getting feed:", error);
+      throw error;
+    }
+  }
+  async getPersonalisedFeed(request: GetPersonalisedFeedRequest) {
+    try {
+      const getPersonalisedFeedResponse =
+        await this.dlClient.getPersonalisedFeed(request);
+      return getPersonalisedFeedResponse;
+    } catch (error) {
+      console.log("Error while getting personalised feed:", error);
       throw error;
     }
   }
@@ -394,7 +406,7 @@ class LMFeedClient {
       const getReportTagsResponse = await this.dlClient.getReportTags(request);
       return getReportTagsResponse;
     } catch (error) {
-      console.log("Error while getting tagging list:", error);
+      console.log("Error while getting report tags:", error);
       throw error;
     }
   }
@@ -403,31 +415,23 @@ class LMFeedClient {
       const postReportResponse = await this.dlClient.postReport(request);
       return postReportResponse;
     } catch (error) {
-      console.log("Error while getting tagging list:", error);
+      console.log("Error while post report:", error);
       throw error;
     }
   }
-  async getComments(
-    postId: string,
-    comment: GetCommentRequest,
-    commentId: string,
-    pageNo: number
-  ) {
+  async getComments(comment: GetCommentRequest) {
     try {
       const getCommentResponse = await this.dlClient.getComments(
-        postId,
         GetCommentRequest.builder()
-          .setCommentId(commentId)
-          .setPage(pageNo)
-          .setPageSize(10)
-          .setPostId(postId)
-          .build(),
-        commentId,
-        pageNo
+          .setCommentId(comment.commentId)
+          .setPage(comment.page)
+          .setPageSize(comment.pageSize)
+          .setPostId(comment.postId)
+          .build()
       );
       return getCommentResponse;
     } catch (error) {
-      console.log("Error while getting tagging list:", error);
+      console.log("Error while getting comments:", error);
       throw error;
     }
   }
@@ -437,7 +441,7 @@ class LMFeedClient {
       const postReportResponse = await this.dlClient.addComment(request);
       return postReportResponse;
     } catch (error) {
-      console.log("Error while getting tagging list:", error);
+      console.log("Error while adding comments:", error);
       throw error;
     }
   }
@@ -566,6 +570,39 @@ class LMFeedClient {
       throw error;
     }
   }
+  async postSeen(request: PostSeenRequest) {
+    try {
+      return await this.dlClient.postSeen(request);
+    } catch (error) {
+      console.log("Error while seen post", error);
+      throw error;
+    }
+  }
+  public async setSeenPost(seenPost: string[]) {
+    try {
+      return await AsyncStorage.setItem(
+        TokenValues.SEEN_POST,
+        JSON.stringify(seenPost)
+      );
+    } catch (error) {
+      return error;
+    }
+  }
+  public async getSeenPost() {
+    try {
+      return await AsyncStorage.getItem(TokenValues.SEEN_POST);
+    } catch (error) {
+      return error;
+    }
+  }
+
+  public async clearSeenPost() {
+    try {
+      return await AsyncStorage.removeItem(TokenValues.SEEN_POST);
+    } catch (error) {
+      return error;
+    }
+  }
 }
 
 export {
@@ -585,6 +622,7 @@ export {
   SavePostRequest,
   GetTaggingListRequest,
   GetFeedRequest,
+  GetPersonalisedFeedRequest,
   GetUniversalFeed,
   GetReportTagsRequest,
   PostReportRequest,
@@ -625,4 +663,5 @@ export {
   MemberRight,
   FilterComment,
   TokenValues,
+  PostSeenRequest,
 };
