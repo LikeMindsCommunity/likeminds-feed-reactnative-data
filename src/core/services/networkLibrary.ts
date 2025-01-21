@@ -63,6 +63,7 @@ class RNNetworkLibrary {
         TokenValues.LOCAL_API_KEY,
         TokenValues.LOCAL_USER,
         TokenValues.IS_USER_ONBOARDING_DONE,
+        TokenValues.SEEN_POST,
       ];
       await AsyncStorage.multiRemove(keys);
     } catch (error) {
@@ -127,7 +128,6 @@ class RNNetworkLibrary {
       const response = await this.makeRequest<{ data: T }>(url, requestConfig);
       return new LMResponse<T>(response?.data?.data, null, true);
     } catch (error) {
-      
       if (error?.response && error?.response?.status === 401) {
         // Access token expired, refresh the token and retry the request
         if (url.includes("user/refresh")) {
@@ -158,9 +158,12 @@ class RNNetworkLibrary {
       }
 
       if (error?.response && error?.response?.status) {
-        return new LMResponse<T>(null, error?.response?.data?.error_message, false);
+        return new LMResponse<T>(
+          null,
+          error?.response?.data?.error_message,
+          false
+        );
       }
-
     }
   }
 }

@@ -382,6 +382,7 @@ class LMFeedClient {
       throw error;
     }
   }
+  
   async getFeed(request: GetFeedRequest) {
     try {
       const getFeedResponse = await this.dlClient.getFeed(request);
@@ -391,6 +392,7 @@ class LMFeedClient {
       throw error;
     }
   }
+
   async getPersonalisedFeed(request: GetPersonalisedFeedRequest) {
     try {
       const getPersonalisedFeedResponse =
@@ -401,6 +403,7 @@ class LMFeedClient {
       throw error;
     }
   }
+
   async getReportTags(request: GetReportTagsRequest) {
     try {
       const getReportTagsResponse = await this.dlClient.getReportTags(request);
@@ -410,6 +413,7 @@ class LMFeedClient {
       throw error;
     }
   }
+
   async postReport(request: PostReportRequest) {
     try {
       const postReportResponse = await this.dlClient.postReport(request);
@@ -419,6 +423,7 @@ class LMFeedClient {
       throw error;
     }
   }
+
   async getComments(comment: GetCommentRequest) {
     try {
       const getCommentResponse = await this.dlClient.getComments(
@@ -454,6 +459,7 @@ class LMFeedClient {
       throw error;
     }
   }
+
   async editComment(request: EditCommentRequest) {
     try {
       return await this.dlClient.editComment(request);
@@ -471,6 +477,7 @@ class LMFeedClient {
       throw error;
     }
   }
+
   async likeComment(request: LikeCommentRequest) {
     try {
       return await this.dlClient.likeComment(request);
@@ -479,6 +486,7 @@ class LMFeedClient {
       throw error;
     }
   }
+
   async getCommentLikes(request: GetCommentLikesRequest) {
     try {
       return await this.dlClient.getCommentLikes(request);
@@ -487,6 +495,7 @@ class LMFeedClient {
       throw error;
     }
   }
+
   async getMemberState() {
     try {
       return await this.dlClient.getMemberState();
@@ -522,6 +531,7 @@ class LMFeedClient {
       throw error;
     }
   }
+
   async getAllMembers(request: GetAllMembersRequest) {
     try {
       return await this.dlClient.getAllMembers(request);
@@ -530,6 +540,7 @@ class LMFeedClient {
       throw error;
     }
   }
+
   async registerDevice(request: RegisterDeviceRequest) {
     try {
       return await this.rnInitiateUserClient.registerDevice(request);
@@ -538,6 +549,7 @@ class LMFeedClient {
       throw error;
     }
   }
+
   async submitPollVote(request: SubmitPollVoteRequest) {
     try {
       return await this.dlClient.submitPollVote(request);
@@ -546,6 +558,7 @@ class LMFeedClient {
       throw error;
     }
   }
+
   async addPollOption(request: AddPollOptionRequest) {
     try {
       return await this.dlClient.addPollOption(request);
@@ -554,6 +567,7 @@ class LMFeedClient {
       throw error;
     }
   }
+
   async getPollVotes(request: GetPollVotesRequest) {
     try {
       return await this.dlClient.getPollVotes(request);
@@ -562,6 +576,7 @@ class LMFeedClient {
       throw error;
     }
   }
+
   async logoutUser(logoutRequest?: LogoutUserRequest) {
     try {
       return await this.rnInitiateUserClient.logoutUser(logoutRequest);
@@ -570,6 +585,7 @@ class LMFeedClient {
       throw error;
     }
   }
+
   async postSeen(request: PostSeenRequest) {
     try {
       return await this.dlClient.postSeen(request);
@@ -578,6 +594,7 @@ class LMFeedClient {
       throw error;
     }
   }
+
   public async setSeenPost(seenPost: string[]) {
     try {
       return await AsyncStorage.setItem(
@@ -588,6 +605,7 @@ class LMFeedClient {
       return error;
     }
   }
+
   public async getSeenPost() {
     try {
       return await AsyncStorage.getItem(TokenValues.SEEN_POST);
