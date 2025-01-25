@@ -11,6 +11,7 @@ import {
   GetCommentLikesRequest,
   GetCommentRequest,
   GetFeedRequest,
+  GetPersonalisedFeedRequest,
   GetNotificationFeedRequest,
   GetPostLikesRequest,
   GetPostRequest,
@@ -46,6 +47,7 @@ import {
   MemberRight,
   UpdateUserTopicsRequest,
   GetUserTopicsRequest,
+  PostSeenRequest,
 } from "@likeminds.community/feed-js";
 import { SubmitPollVoteRequest } from "@likeminds.community/feed-js/dist/poll/model/SubmitPollVoteRequest";
 import { AddPollOptionRequest } from "@likeminds.community/feed-js/dist/poll/model/AddPollOptionRequest";
@@ -380,54 +382,61 @@ class LMFeedClient {
       throw error;
     }
   }
+  
   async getFeed(request: GetFeedRequest) {
     try {
       const getFeedResponse = await this.dlClient.getFeed(request);
       return getFeedResponse;
     } catch (error) {
-      console.log("Error while getting tagging list:", error);
+      console.log("Error while getting feed:", error);
       throw error;
     }
   }
+
+  async getPersonalisedFeed(request: GetPersonalisedFeedRequest) {
+    try {
+      const getPersonalisedFeedResponse =
+        await this.dlClient.getPersonalisedFeed(request);
+      return getPersonalisedFeedResponse;
+    } catch (error) {
+      console.log("Error while getting personalised feed:", error);
+      throw error;
+    }
+  }
+
   async getReportTags(request: GetReportTagsRequest) {
     try {
       const getReportTagsResponse = await this.dlClient.getReportTags(request);
       return getReportTagsResponse;
     } catch (error) {
-      console.log("Error while getting tagging list:", error);
+      console.log("Error while getting report tags:", error);
       throw error;
     }
   }
+
   async postReport(request: PostReportRequest) {
     try {
       const postReportResponse = await this.dlClient.postReport(request);
       return postReportResponse;
     } catch (error) {
-      console.log("Error while getting tagging list:", error);
+      console.log("Error while post report:", error);
       throw error;
     }
   }
-  async getComments(
-    postId: string,
-    comment: GetCommentRequest,
-    commentId: string,
-    pageNo: number
-  ) {
+
+  async getComments(comment: GetCommentRequest) {
     try {
       const getCommentResponse = await this.dlClient.getComments(
-        postId,
         GetCommentRequest.builder()
-          .setCommentId(commentId)
-          .setPage(pageNo)
-          .setPageSize(10)
-          .setPostId(postId)
-          .build(),
-        commentId,
-        pageNo
+          .setCommentId(comment.commentId)
+          .setPage(comment.page)
+          .setPageSize(comment.pageSize)
+          .setPostId(comment.postId)
+          .build()
       );
       return getCommentResponse;
     } catch (error) {
-      console.log("Error while getting tagging list:", error);
+      console.log("Error while getting comments:", error);
       throw error;
     }
   }
@@ -437,7 +446,7 @@ class LMFeedClient {
       const postReportResponse = await this.dlClient.addComment(request);
       return postReportResponse;
     } catch (error) {
-      console.log("Error while getting tagging list:", error);
+      console.log("Error while adding comments:", error);
       throw error;
     }
   }
@@ -450,6 +459,7 @@ class LMFeedClient {
       throw error;
     }
   }
+
   async editComment(request: EditCommentRequest) {
     try {
       return await this.dlClient.editComment(request);
@@ -467,6 +477,7 @@ class LMFeedClient {
       throw error;
     }
   }
+
   async likeComment(request: LikeCommentRequest) {
     try {
       return await this.dlClient.likeComment(request);
@@ -475,6 +486,7 @@ class LMFeedClient {
       throw error;
     }
   }
+
   async getCommentLikes(request: GetCommentLikesRequest) {
     try {
       return await this.dlClient.getCommentLikes(request);
@@ -483,6 +495,7 @@ class LMFeedClient {
       throw error;
     }
   }
+
   async getMemberState() {
     try {
       return await this.dlClient.getMemberState();
@@ -518,6 +531,7 @@ class LMFeedClient {
       throw error;
     }
   }
+
   async getAllMembers(request: GetAllMembersRequest) {
     try {
       return await this.dlClient.getAllMembers(request);
@@ -526,6 +540,7 @@ class LMFeedClient {
       throw error;
     }
   }
+
   async registerDevice(request: RegisterDeviceRequest) {
     try {
       return await this.rnInitiateUserClient.registerDevice(request);
@@ -534,6 +549,7 @@ class LMFeedClient {
       throw error;
     }
   }
+
   async submitPollVote(request: SubmitPollVoteRequest) {
     try {
       return await this.dlClient.submitPollVote(request);
@@ -542,6 +558,7 @@ class LMFeedClient {
       throw error;
     }
   }
+
   async addPollOption(request: AddPollOptionRequest) {
     try {
       return await this.dlClient.addPollOption(request);
@@ -550,6 +567,7 @@ class LMFeedClient {
       throw error;
     }
   }
+
   async getPollVotes(request: GetPollVotesRequest) {
     try {
       return await this.dlClient.getPollVotes(request);
@@ -558,12 +576,49 @@ class LMFeedClient {
       throw error;
     }
   }
+
   async logoutUser(logoutRequest?: LogoutUserRequest) {
     try {
       return await this.rnInitiateUserClient.logoutUser(logoutRequest);
     } catch (error) {
       console.log("Error while logging out user", error);
       throw error;
+    }
+  }
+
+  async postSeen(request: PostSeenRequest) {
+    try {
+      return await this.dlClient.postSeen(request);
+    } catch (error) {
+      console.log("Error while seen post", error);
+      throw error;
+    }
+  }
+
+  public async setSeenPost(seenPost: string[]) {
+    try {
+      return await AsyncStorage.setItem(
+        TokenValues.SEEN_POST,
+        JSON.stringify(seenPost)
+      );
+    } catch (error) {
+      return error;
+    }
+  }
+
+  public async getSeenPost() {
+    try {
+      return await AsyncStorage.getItem(TokenValues.SEEN_POST);
+    } catch (error) {
+      return error;
+    }
+  }
+
+  public async clearSeenPost() {
+    try {
+      return await AsyncStorage.removeItem(TokenValues.SEEN_POST);
+    } catch (error) {
+      return error;
     }
   }
 }
@@ -585,6 +640,7 @@ export {
   SavePostRequest,
   GetTaggingListRequest,
   GetFeedRequest,
+  GetPersonalisedFeedRequest,
   GetUniversalFeed,
   GetReportTagsRequest,
   PostReportRequest,
@@ -625,4 +681,5 @@ export {
   MemberRight,
   FilterComment,
   TokenValues,
+  PostSeenRequest,
 };
