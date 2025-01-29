@@ -68,6 +68,7 @@ import LMResponse from "./core/services/lmresponse";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { TokenValues } from "./enums/TokenValues";
 import { LogoutUserRequest } from "./models/requestModels/LogoutUserRequest";
+import { LMTemporaryPostViewData } from "./post/models/TemporaryPostViewData";
 
 class LMFeedClient {
   private rnInitiateUserClient: RNInitiateUserClient;
@@ -619,6 +620,39 @@ class LMFeedClient {
       return await AsyncStorage.removeItem(TokenValues.SEEN_POST);
     } catch (error) {
       return error;
+    }
+  }
+  async saveTemporaryPost(post: LMTemporaryPostViewData) {
+    try {
+      await AsyncStorage.setItem('@tempPostData', JSON.stringify(post));
+      return new LMResponse(null, null, true);
+    } catch (e) {
+      console.error('Failed to save data:', e);
+      return new LMResponse(e, null, false);
+    }
+  }
+  async getTemporaryPost() {
+    try {
+      const jsonValue = await AsyncStorage.getItem('@tempPostData');
+      if (jsonValue != null) {
+        const parsedData = JSON.parse(jsonValue);
+        return new LMResponse(parsedData, null, true);
+      } else {
+        console.log('No data found');
+        return new LMResponse(null, null, true);
+      }
+    } catch (e) {
+      console.error('Failed to fetch data:', e);
+      return new LMResponse(e, null, false);
+    }
+  }
+  async deleteTemporaryPost() {
+    try {
+      await AsyncStorage.removeItem('@tempPostData');
+      return new LMResponse(null, null, true)
+    } catch (e) {
+      console.error('Failed to delete data:', e);
+      return new LMResponse(e, null, false)
     }
   }
 }
