@@ -383,7 +383,7 @@ class LMFeedClient {
       throw error;
     }
   }
-  
+
   async getFeed(request: GetFeedRequest) {
     try {
       const getFeedResponse = await this.dlClient.getFeed(request);
@@ -593,6 +593,8 @@ class LMFeedClient {
     } catch (error) {
       console.log("Error while searching posts", error);
       throw error
+    }
+  }
 
   async postSeen(request: PostSeenRequest) {
     try {
