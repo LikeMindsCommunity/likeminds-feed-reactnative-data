@@ -624,7 +624,7 @@ class LMFeedClient {
   }
   async saveTemporaryPost(post: LMTemporaryPostViewData) {
     try {
-      await AsyncStorage.setItem('@tempPostData', JSON.stringify(post));
+      await AsyncStorage.setItem(TokenValues.TEMPORARY_POST, JSON.stringify(post));
       return new LMResponse(null, null, true);
     } catch (e) {
       console.error('Failed to save data:', e);
@@ -633,7 +633,7 @@ class LMFeedClient {
   }
   async getTemporaryPost() {
     try {
-      const jsonValue = await AsyncStorage.getItem('@tempPostData');
+      const jsonValue = await AsyncStorage.getItem(TokenValues.TEMPORARY_POST);
       if (jsonValue != null) {
         const parsedData = JSON.parse(jsonValue);
         return new LMResponse(parsedData, null, true);
@@ -648,7 +648,7 @@ class LMFeedClient {
   }
   async deleteTemporaryPost() {
     try {
-      await AsyncStorage.removeItem('@tempPostData');
+      await AsyncStorage.removeItem(TokenValues.TEMPORARY_POST);
       return new LMResponse(null, null, true)
     } catch (e) {
       console.error('Failed to delete data:', e);
