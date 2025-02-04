@@ -1,4 +1,4 @@
-import { TempPost } from "src/post/models/TempPost";
+import { TempPost } from "../../post/models/TempPost";
 
 export interface GetTemporaryPostResponse {
     tempPost?: TempPost 
