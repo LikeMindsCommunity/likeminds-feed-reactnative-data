@@ -70,6 +70,7 @@ import { TokenValues } from "./enums/TokenValues";
 import { LogoutUserRequest } from "./models/requestModels/LogoutUserRequest";
 import { TemporaryPost } from "./post/models/TemporaryPostViewData";
 import { SaveTemporaryPostRequest } from "./models/requestModels/SaveTemporaryPostRequest";
+import { GetTemporaryPostResponse } from "./models/responseModels/GetTemporaryPostResponse";
 
 class LMFeedClient {
   private rnInitiateUserClient: RNInitiateUserClient;
@@ -384,7 +385,7 @@ class LMFeedClient {
       throw error;
     }
   }
-  
+
   async getFeed(request: GetFeedRequest) {
     try {
       const getFeedResponse = await this.dlClient.getFeed(request);
@@ -634,12 +635,12 @@ class LMFeedClient {
     }
   }
 
-  async getTemporaryPost() {
+  async getTemporaryPost(): Promise<LMResponse<GetTemporaryPostResponse>> {
     try {
       const jsonValue = await AsyncStorage.getItem(TokenValues.TEMPORARY_POST);
       if (jsonValue != null) {
         const parsedData = JSON.parse(jsonValue);
-        return new LMResponse(parsedData, null, true);
+        return new LMResponse({ tempPost: parsedData }, null, true);
       } else {
         return new LMResponse(null, null, true);
       }
@@ -648,7 +649,7 @@ class LMFeedClient {
       return new LMResponse(e, null, false);
     }
   }
-  
+
   async deleteTemporaryPost() {
     try {
       await AsyncStorage.removeItem(TokenValues.TEMPORARY_POST);
