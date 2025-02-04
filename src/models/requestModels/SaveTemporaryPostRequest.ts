@@ -1,5 +1,5 @@
-import { TemporaryPost } from "src/post/models/TemporaryPost";
+import { TempPost } from "src/post/models/TempPost";
 
 export interface SaveTemporaryPostRequest {
-    tempPost: TemporaryPost
+    tempPost: TempPost
 }
