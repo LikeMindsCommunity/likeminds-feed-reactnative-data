@@ -68,7 +68,6 @@ import LMResponse from "./core/services/lmresponse";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { TokenValues } from "./enums/TokenValues";
 import { LogoutUserRequest } from "./models/requestModels/LogoutUserRequest";
-import { TemporaryPost } from "./post/models/TemporaryPostViewData";
 import { SaveTemporaryPostRequest } from "./models/requestModels/SaveTemporaryPostRequest";
 import { GetTemporaryPostResponse } from "./models/responseModels/GetTemporaryPostResponse";
 
