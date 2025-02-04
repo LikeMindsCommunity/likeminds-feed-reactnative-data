@@ -68,7 +68,8 @@ import LMResponse from "./core/services/lmresponse";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { TokenValues } from "./enums/TokenValues";
 import { LogoutUserRequest } from "./models/requestModels/LogoutUserRequest";
-import { LMTemporaryPostViewData } from "./post/models/TemporaryPostViewData";
+import { TemporaryPost } from "./post/models/TemporaryPostViewData";
+import { SaveTemporaryPostRequest } from "./models/requestModels/SaveTemporaryPostRequest";
 
 class LMFeedClient {
   private rnInitiateUserClient: RNInitiateUserClient;
@@ -622,15 +623,17 @@ class LMFeedClient {
       return error;
     }
   }
-  async saveTemporaryPost(post: LMTemporaryPostViewData) {
+
+  async saveTemporaryPost(request: SaveTemporaryPostRequest) {
     try {
-      await AsyncStorage.setItem(TokenValues.TEMPORARY_POST, JSON.stringify(post));
+      await AsyncStorage.setItem(TokenValues.TEMPORARY_POST, JSON.stringify(request.tempPost));
       return new LMResponse(null, null, true);
     } catch (e) {
       console.error('Failed to save data:', e);
       return new LMResponse(e, null, false);
     }
   }
+
   async getTemporaryPost() {
     try {
       const jsonValue = await AsyncStorage.getItem(TokenValues.TEMPORARY_POST);
@@ -638,7 +641,6 @@ class LMFeedClient {
         const parsedData = JSON.parse(jsonValue);
         return new LMResponse(parsedData, null, true);
       } else {
-        console.log('No data found');
         return new LMResponse(null, null, true);
       }
     } catch (e) {
@@ -646,6 +648,7 @@ class LMFeedClient {
       return new LMResponse(e, null, false);
     }
   }
+  
   async deleteTemporaryPost() {
     try {
       await AsyncStorage.removeItem(TokenValues.TEMPORARY_POST);

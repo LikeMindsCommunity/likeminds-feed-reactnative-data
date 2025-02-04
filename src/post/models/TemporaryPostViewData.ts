@@ -1,7 +1,7 @@
 import { Attachment, FilterComment, Reply } from "@likeminds.community/feed-js";
 
 // data model for post ViewData
-export interface LMTemporaryPostViewData {
+export interface TemporaryPost {
   id?: string;
   temporaryId: string;
   attachments?: Array<Attachment>;
