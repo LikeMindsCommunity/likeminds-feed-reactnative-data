@@ -47,6 +47,7 @@ import {
   MemberRight,
   UpdateUserTopicsRequest,
   GetUserTopicsRequest,
+  SearchPostsRequest,
   PostSeenRequest,
 } from "@likeminds.community/feed-js";
 import { SubmitPollVoteRequest } from "@likeminds.community/feed-js/dist/poll/model/SubmitPollVoteRequest";
@@ -382,7 +383,7 @@ class LMFeedClient {
       throw error;
     }
   }
-  
+
   async getFeed(request: GetFeedRequest) {
     try {
       const getFeedResponse = await this.dlClient.getFeed(request);
@@ -585,6 +586,15 @@ class LMFeedClient {
       throw error;
     }
   }
+  
+  async searchPosts(request: SearchPostsRequest) {
+    try {
+      return await this.dlClient.searchPosts(request);
+    } catch (error) {
+      console.log("Error while searching posts", error);
+      throw error
+    }
+  }
 
   async postSeen(request: PostSeenRequest) {
     try {
@@ -658,6 +668,7 @@ export {
   GetAllMembersRequest,
   EditCommentRequest,
   GetTopicsRequest,
+  SearchPostsRequest,
   UpdateUserTopicsRequest,
   GetUserTopicsRequest,
   GetTopics,
