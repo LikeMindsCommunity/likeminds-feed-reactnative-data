@@ -1,7 +1,7 @@
 {
   "name": "@likeminds.community/feed-rn",
-  "versionCode": "16",
-  "version": "1.5.0",
+  "versionCode": "17",
+  "version": "1.5.1",
   "description": "LikeMinds ReactNative SDK for chat APIs",
   "main": "dist/index.js",
   "module": "dist/index.m.js",
@@ -38,7 +38,7 @@
     "url": "git+https://github.com/LikeMindsCommunity/ReactNative-Chat-Data.git"
   },
   "dependencies": {
-    "@likeminds.community/feed-js": "1.16.0",
+    "@likeminds.community/feed-js": "1.16.1",
     "@react-native-async-storage/async-storage": "1.23.1",
     "axios": "0.22.0"
   },
