@@ -668,6 +668,17 @@ class LMFeedClient {
       return new LMResponse(e, null, false)
     }
   }
+
+  async getFeedWithSearchParams(request: GetFeedRequest) {
+    try {
+      const getFeedResponse = await this.dlClient.getFeedWithSearchParams(request);
+      return getFeedResponse;
+    } catch (error) {
+      console.log("Error while getting feed:", error);
+      throw error;
+    }
+  }
+
 }
 
 export {
