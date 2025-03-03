@@ -25,7 +25,6 @@ import {
   MarkReadNotificationRequest,
   PinPostRequest,
   PostReportRequest,
-  RegisterDeviceRequest,
   ReplyCommentRequest,
   SavePostRequest,
   ValidateUserRequest,
@@ -71,6 +70,7 @@ import { TokenValues } from "./enums/TokenValues";
 import { LogoutUserRequest } from "./models/requestModels/LogoutUserRequest";
 import { SaveTemporaryPostRequest } from "./models/requestModels/SaveTemporaryPostRequest";
 import { GetTemporaryPostResponse } from "./models/responseModels/GetTemporaryPostResponse";
+import RegisterDeviceRequest from "./models/requestModels/RegisterDeviceRequest";
 
 class LMFeedClient {
   private rnInitiateUserClient: RNInitiateUserClient;

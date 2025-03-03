@@ -42,7 +42,7 @@ class RegisterDeviceRequest {
     // Build method to create the final RegisterDeviceRequest object
     public build(): RegisterDeviceRequest {
       if (!this.token || !this.deviceId) {
-        throw new Error("UUID and DeviceI are required.");
+        throw new Error("UUID and DeviceID are required.");
       }
 
       if (!this.platform) {
