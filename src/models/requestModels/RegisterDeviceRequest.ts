@@ -2,11 +2,13 @@ class RegisterDeviceRequest {
     // Properties of the request class
     token: string;
     deviceId: string;
+    platformCode: string;
   
     // Public constructor to create the request object
-    constructor(token: string, deviceId: string) {
+    constructor(token: string, deviceId: string, platformCode: string) {
       this.token = token;
       this.deviceId = deviceId;
+      this.platformCode = platformCode
     }
   
     // Static builder method to create the request object
@@ -19,6 +21,7 @@ class RegisterDeviceRequest {
   export class RegisterDeviceRequestBuilder {
     private token: string | undefined;
     private deviceId: string | undefined;
+    private platformCode: string;
     // Add other properties as needed
   
     public setToken(token: string): RegisterDeviceRequestBuilder {
@@ -30,14 +33,23 @@ class RegisterDeviceRequest {
       this.deviceId = deviceId;
       return this;
     }
+
+    public setPlatformCode(platformCode: string): RegisterDeviceRequestBuilder {
+      this.platformCode = platformCode;
+      return this;
+    }
   
     // Build method to create the final RegisterDeviceRequest object
     public build(): RegisterDeviceRequest {
       if (!this.token || !this.deviceId) {
-        throw new Error("UUID and DeviceI are required.");
+        throw new Error("UUID and DeviceID are required.");
+      }
+
+      if (!this.platformCode) {
+        throw new Error("Platform code is required.");
       }
   
-      return new RegisterDeviceRequest(this.token, this.deviceId);
+      return new RegisterDeviceRequest(this.token, this.deviceId, this.platformCode);
     }
   }
   

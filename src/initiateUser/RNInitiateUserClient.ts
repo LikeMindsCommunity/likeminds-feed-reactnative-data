@@ -99,6 +99,7 @@ class RNInitiateUserClient {
         data: { token: request?.token },
         headers: {
           "x-device-id": request?.deviceId,
+          "x-platform-code": request?.platformCode
         },
       })
       .then((response: any) => {

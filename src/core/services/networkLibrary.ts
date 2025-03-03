@@ -95,7 +95,8 @@ class RNNetworkLibrary {
     requestConfig.headers["Content-Type"] = "application/json";
     requestConfig.headers["x-version-code"] = this.versionCode?.toString();
 
-    requestConfig.headers["x-platform-code"] = this.platformCode;
+    const device = url.includes('user/device/push');
+    if (!device) requestConfig.headers['x-platform-code'] = this.platformCode;
 
     const cFeed = url.includes("community/feed");
     if (cFeed) requestConfig.headers["x-accept-version"] = "v2";
