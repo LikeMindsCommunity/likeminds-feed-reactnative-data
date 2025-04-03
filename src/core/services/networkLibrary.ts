@@ -34,8 +34,8 @@ class RNNetworkLibrary {
   }
 
   public setTokens(accessToken: string, refreshToken: string) {
-    AsyncStorage.setItem(TokenValues.LOCAL_ACCESS_TOKEN, accessToken);
-    AsyncStorage.setItem(TokenValues.LOCAL_REFRESH_TOKEN, refreshToken);
+    AsyncStorage.setItem(TokenValues.LOCAL_ACCESS_TOKEN, accessToken ?? "");
+    AsyncStorage.setItem(TokenValues.LOCAL_REFRESH_TOKEN, refreshToken ?? "");
   }
 
   public async getTokens() {
