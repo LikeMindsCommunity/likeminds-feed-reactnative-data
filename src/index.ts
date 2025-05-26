@@ -52,7 +52,8 @@ import {
   ActionTaken,
   ActivityEntityData,
   ActivityEntityType,
-  AttachmentType
+  AttachmentType,
+  ReportEntityType
 } from "@likeminds.community/feed-js";
 import { SubmitPollVoteRequest } from "@likeminds.community/feed-js/dist/poll/model/SubmitPollVoteRequest";
 import { AddPollOptionRequest } from "@likeminds.community/feed-js/dist/poll/model/AddPollOptionRequest";
@@ -741,5 +742,6 @@ export {
   ActionTaken,
   ActivityEntityData,
   ActivityEntityType,
-  AttachmentType
+  AttachmentType,
+  ReportEntityType
 };
