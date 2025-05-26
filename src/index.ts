@@ -48,6 +48,12 @@ import {
   GetUserTopicsRequest,
   SearchPostsRequest,
   PostSeenRequest,
+  ActivityActionType,
+  ActionTaken,
+  ActivityEntityData,
+  ActivityEntityType,
+  AttachmentType,
+  ReportEntityType
 } from "@likeminds.community/feed-js";
 import { SubmitPollVoteRequest } from "@likeminds.community/feed-js/dist/poll/model/SubmitPollVoteRequest";
 import { AddPollOptionRequest } from "@likeminds.community/feed-js/dist/poll/model/AddPollOptionRequest";
@@ -732,4 +738,10 @@ export {
   FilterComment,
   TokenValues,
   PostSeenRequest,
+  ActivityActionType,
+  ActionTaken,
+  ActivityEntityData,
+  ActivityEntityType,
+  AttachmentType,
+  ReportEntityType
 };
