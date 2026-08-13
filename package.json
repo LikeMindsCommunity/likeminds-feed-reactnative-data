@@ -17,7 +17,7 @@
   },
   "author": "LikeMinds",
   "homepage": "https://likeminds.community/",
-  "license": "ISC",
+  "license": "Apache-2.0",
   "files": [
     "dist"
   ],
